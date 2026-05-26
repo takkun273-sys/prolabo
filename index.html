@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>マイモンスター育成 - プロラボ加古川校</title>
+<title>マイモンスター育成 - プロラボ</title>
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -312,7 +312,7 @@ input:checked+.slider:before{transform:translateX(20px);}
     <div class="login-logo">
       <div class="logo-icon">🌟</div>
       <h1>マイモンスター育成</h1>
-      <p>放課後等デイサービス プロラボ加古川校</p>
+      <p>放課後等デイサービス プロラボ</p>
       <button id="installBtn" onclick="installApp()" style="display:none;margin-top:10px;background:linear-gradient(135deg,#D4A017,#f59e0b);border:none;border-radius:12px;padding:10px 22px;color:#1c0d00;font-size:13px;font-weight:800;cursor:pointer;font-family:'M PLUS Rounded 1c',sans-serif;">
         📲 ホーム画面に追加する
       </button>
@@ -346,6 +346,8 @@ input:checked+.slider:before{transform:translateX(20px);}
           <option value="5">小学5年</option><option value="6">小学6年</option>
           <option value="7">中学1年</option><option value="8">中学2年</option>
           <option value="9">中学3年</option>
+          <option value="10">高校1年</option><option value="11">高校2年</option>
+          <option value="12">高校3年</option>
         </select>
       </div>
       <div class="input-group">
@@ -568,7 +570,7 @@ input:checked+.slider:before{transform:translateX(20px);}
 <!-- ADMIN PAGE -->
 <div class="page" id="page-admin">
   <div class="topbar">
-    <div class="topbar-title">🔐 管理画面 - プロラボ加古川校</div>
+    <div class="topbar-title">🔐 管理画面 - プロラボ</div>
     <div class="topbar-right">
       <button class="icon-btn" onclick="adminLogout()">ログアウト</button>
     </div>
@@ -898,7 +900,7 @@ function renderAdminStudents(){
   if(!list) return;
   if(!entries.length){list.innerHTML='<div class="empty-msg">登録された児童はいません</div>';return;}
   list.innerHTML=entries.map(([id,s])=>{
-    const gradeStr=s.grade<=6?`小学${s.grade}年`:`中学${s.grade-6}年`;
+    const gradeStr=s.grade<=6?`小学${s.grade}年`:s.grade<=9?`中学${s.grade-6}年`:`高校${s.grade-9}年`;
     const stg=STAGES[s.stage||0];
     const ivSummary=s.iv?IV_STATS.map(st=>{
       const rank=ivRank(s.iv[st.key]);
@@ -923,7 +925,7 @@ function renderAdminHistory(){
   if(!list) return;
   if(!hist.length){list.innerHTML='<div class="empty-msg">まだ記録がありません</div>';return;}
   list.innerHTML=hist.slice(0,50).map(h=>{
-    const gradeStr=h.grade<=6?`小学${h.grade}年`:`中学${h.grade-6}年`;
+    const gradeStr=h.grade<=6?`小学${h.grade}年`:h.grade<=9?`中学${h.grade-6}年`:`高校${h.grade-9}年`;
     return `<div class="admin-hist-item">
       <div class="admin-hist-name">${h.name}（${gradeStr}）</div>
       <div class="admin-hist-text">${h.text}</div>
@@ -1046,7 +1048,7 @@ function enterChildPage(){
   const s=getStudent(currentUser.id);
   currentUser={...currentUser,...s};
   document.getElementById('topbarName').textContent=currentUser.name+' のページ';
-  const gradeStr=currentUser.grade<=6?`小学${currentUser.grade}年`:`中学${currentUser.grade-6}年`;
+  const gradeStr=currentUser.grade<=6?`小学${currentUser.grade}年`:currentUser.grade<=9?`中学${currentUser.grade-6}年`:`高校${currentUser.grade-9}年`;
   document.getElementById('gradeDisplay').textContent=gradeStr;
   if(!currentUser.monsterName){
     document.getElementById('setupWrap').style.display='block';
@@ -1082,7 +1084,7 @@ function renderChildUI(){
 function applyQuickVisibility(){
   const settings=getSettings();
   const hideForSenior=settings.hideQuickForSenior!==false;
-  const isSenior=currentUser.grade>=5;
+  const isSenior=currentUser.grade>=5; // 小5以上・中学・高校
   document.getElementById('quickSection').style.display=(hideForSenior&&isSenior)?'none':'block';
 }
 
