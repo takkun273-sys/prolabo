@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>マイモンスター育成 - プロラボ</title>
+<title>マイモンスター育成 - プロラボ加古川校</title>
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -312,7 +312,7 @@ input:checked+.slider:before{transform:translateX(20px);}
     <div class="login-logo">
       <div class="logo-icon">🌟</div>
       <h1>マイモンスター育成</h1>
-      <p>放課後等デイサービス プロラボ</p>
+      <p>放課後等デイサービス プロラボ加古川校</p>
       <button id="installBtn" onclick="installApp()" style="display:none;margin-top:10px;background:linear-gradient(135deg,#D4A017,#f59e0b);border:none;border-radius:12px;padding:10px 22px;color:#1c0d00;font-size:13px;font-weight:800;cursor:pointer;font-family:'M PLUS Rounded 1c',sans-serif;">
         📲 ホーム画面に追加する
       </button>
@@ -346,8 +346,6 @@ input:checked+.slider:before{transform:translateX(20px);}
           <option value="5">小学5年</option><option value="6">小学6年</option>
           <option value="7">中学1年</option><option value="8">中学2年</option>
           <option value="9">中学3年</option>
-          <option value="10">高校1年</option><option value="11">高校2年</option>
-          <option value="12">高校3年</option>
         </select>
       </div>
       <div class="input-group">
@@ -491,8 +489,8 @@ input:checked+.slider:before{transform:translateX(20px);}
         </div>
       </div>
 
-      <textarea id="freeText" placeholder="今日のレッスンで学んだこと、気づいたこと、感想などを書いてね。" oninput="updateCharCount()" maxlength="120"></textarea>
-      <div class="char-count"><span id="charCount">0</span> / 120文字</div>
+      <textarea id="freeText" placeholder="今日のレッスンで学んだこと、気づいたこと、感想などを書いてね。" oninput="updateCharCount()"></textarea>
+      <div class="char-count"><span id="charCount">0</span>文字</div>
       <button class="check-btn" id="checkBtn" onclick="checkWithAI()" disabled>🤖 AIに文章をチェックしてもらう</button>
       <div class="ai-box" id="aiBox">
         <div class="ai-label">🤖 AIからのフィードバック</div>
@@ -570,7 +568,7 @@ input:checked+.slider:before{transform:translateX(20px);}
 <!-- ADMIN PAGE -->
 <div class="page" id="page-admin">
   <div class="topbar">
-    <div class="topbar-title">🔐 管理画面 - プロラボ</div>
+    <div class="topbar-title">🔐 管理画面 - プロラボ加古川校</div>
     <div class="topbar-right">
       <button class="icon-btn" onclick="adminLogout()">ログアウト</button>
     </div>
@@ -655,24 +653,7 @@ const SHISHIN_STAGE_IMG = {
 
 const SHISHIN_TYPE = {hp:'hp', atk:'atk', def:'def', spd:'spd'};
 
-const ADMIN_PASSWORD_DEFAULT = 'prolabo2024';
-function getAdminPassword(){ return localStorage.getItem('plm_admin_pw') || ADMIN_PASSWORD_DEFAULT; }
-
-// ログイン試行制限
-function getLoginAttempts(){ try{ return JSON.parse(localStorage.getItem('plm_login_attempts')||'{"count":0,"lockUntil":0}'); }catch(e){ return {count:0,lockUntil:0}; } }
-function saveLoginAttempts(d){ localStorage.setItem('plm_login_attempts', JSON.stringify(d)); }
-function isLocked(){
-  const a = getLoginAttempts();
-  if(a.lockUntil > Date.now()) return Math.ceil((a.lockUntil - Date.now())/1000);
-  return 0;
-}
-function recordFailedLogin(){
-  const a = getLoginAttempts();
-  a.count = (a.count||0) + 1;
-  if(a.count >= 5){ a.lockUntil = Date.now() + 5*60*1000; a.count = 0; } // 5回失敗で5分ロック
-  saveLoginAttempts(a);
-}
-function resetLoginAttempts(){ saveLoginAttempts({count:0,lockUntil:0}); }
+const ADMIN_PASSWORD = 'prolabo2024';
 const STAGES = [
   {name:'たまご',icon:'🥚',minExp:0},
   {name:'こども',icon:'🐣',minExp:20},
@@ -701,9 +682,9 @@ const NATURES = [
 ];
 
 function generateIV() {
-  // 初期値は低め（0〜5）にして文章で育てる余地を作る
+  // 各ステータス 0〜31（ポケモン準拠）
   const iv = {};
-  IV_STATS.forEach(s => { iv[s.key] = Math.floor(Math.random() * 6); });
+  IV_STATS.forEach(s => { iv[s.key] = Math.floor(Math.random() * 32); });
   iv.nature = Math.floor(Math.random() * NATURES.length);
   return iv;
 }
@@ -917,7 +898,7 @@ function renderAdminStudents(){
   if(!list) return;
   if(!entries.length){list.innerHTML='<div class="empty-msg">登録された児童はいません</div>';return;}
   list.innerHTML=entries.map(([id,s])=>{
-    const gradeStr=s.grade<=6?`小学${s.grade}年`:s.grade<=9?`中学${s.grade-6}年`:`高校${s.grade-9}年`;
+    const gradeStr=s.grade<=6?`小学${s.grade}年`:`中学${s.grade-6}年`;
     const stg=STAGES[s.stage||0];
     const ivSummary=s.iv?IV_STATS.map(st=>{
       const rank=ivRank(s.iv[st.key]);
@@ -942,7 +923,7 @@ function renderAdminHistory(){
   if(!list) return;
   if(!hist.length){list.innerHTML='<div class="empty-msg">まだ記録がありません</div>';return;}
   list.innerHTML=hist.slice(0,50).map(h=>{
-    const gradeStr=h.grade<=6?`小学${h.grade}年`:h.grade<=9?`中学${h.grade-6}年`:`高校${h.grade-9}年`;
+    const gradeStr=h.grade<=6?`小学${h.grade}年`:`中学${h.grade-6}年`;
     return `<div class="admin-hist-item">
       <div class="admin-hist-name">${h.name}（${gradeStr}）</div>
       <div class="admin-hist-text">${h.text}</div>
@@ -1052,18 +1033,9 @@ function doRegister(){
   enterChildPage();
 }
 function adminLogin(){
-  const locked = isLocked();
-  if(locked){ showToast(`ロック中です。${locked}秒後に再試行してください`,'var(--red)'); return; }
-  if(document.getElementById('adminPw').value===getAdminPassword()){
-    resetLoginAttempts();
+  if(document.getElementById('adminPw').value===ADMIN_PASSWORD){
     showPage('admin');renderAdminStudents();loadAdminSettings();
-  }else{
-    recordFailedLogin();
-    const a=getLoginAttempts();
-    const remaining=5-(a.count||0);
-    if(isLocked()){ showToast('5回失敗しました。5分間ロックされます','var(--red)'); }
-    else{ showToast(`パスワードがちがいます（残り${remaining}回）`,'var(--red)'); }
-  }
+  }else{showToast('パスワードがちがいます','var(--red)');}
 }
 function childLogout(){currentUser=null;showPage('login');showLogin();}
 function adminLogout(){showPage('login');showLogin();}
@@ -1074,7 +1046,7 @@ function enterChildPage(){
   const s=getStudent(currentUser.id);
   currentUser={...currentUser,...s};
   document.getElementById('topbarName').textContent=currentUser.name+' のページ';
-  const gradeStr=currentUser.grade<=6?`小学${currentUser.grade}年`:currentUser.grade<=9?`中学${currentUser.grade-6}年`:`高校${currentUser.grade-9}年`;
+  const gradeStr=currentUser.grade<=6?`小学${currentUser.grade}年`:`中学${currentUser.grade-6}年`;
   document.getElementById('gradeDisplay').textContent=gradeStr;
   if(!currentUser.monsterName){
     document.getElementById('setupWrap').style.display='block';
@@ -1102,37 +1074,15 @@ function setupMonster(){
 function renderChildUI(){
   const s=getStudent(currentUser.id);
   currentUser={...currentUser,...s};
-  renderMonster();applyQuickVisibility();
-  document.getElementById('battleBtn').style.display=(s.stage||0)>=3?'':'none';
-
-  // 1日1回制限チェック
-  const today=new Date().toISOString().slice(0,10);
-  const alreadyDone=(s.lastSubmitDate||'')=== today;
-  const outputCard=document.getElementById('outputCard');
-  let doneMsg=document.getElementById('doneTodayMsg');
-  if(!doneMsg){
-    doneMsg=document.createElement('div');
-    doneMsg.id='doneTodayMsg';
-    doneMsg.style.cssText='background:rgba(52,211,153,.1);border:1.5px solid rgba(52,211,153,.3);border-radius:16px;padding:20px;text-align:center;margin-bottom:14px;display:none;';
-    doneMsg.innerHTML=`<div style="font-size:28px;margin-bottom:8px;">✅</div>
-      <div style="font-family:\'Zen Maru Gothic\',sans-serif;font-size:16px;font-weight:700;color:var(--green);margin-bottom:6px;">今日のアウトプット完了！</div>
-      <div style="font-size:13px;color:var(--text-dim);">また明日来てね！モンスターが待ってるよ🐉</div>`;
-    outputCard.parentNode.insertBefore(doneMsg, outputCard);
-  }
-  if(alreadyDone){
-    outputCard.style.display='none';
-    doneMsg.style.display='block';
-  } else {
-    outputCard.style.display='block';
-    doneMsg.style.display='none';
-    resetForm();
-  }
+  renderMonster();applyQuickVisibility();resetForm();
   document.getElementById('histCard').classList.add('hidden');
+  // かんせい（Lv.4）のみバトルボタン表示
+  document.getElementById('battleBtn').style.display=(s.stage||0)>=3?'':'none';
 }
 function applyQuickVisibility(){
   const settings=getSettings();
   const hideForSenior=settings.hideQuickForSenior!==false;
-  const isSenior=currentUser.grade>=5; // 小5以上・中学・高校
+  const isSenior=currentUser.grade>=5;
   document.getElementById('quickSection').style.display=(hideForSenior&&isSenior)?'none':'block';
 }
 
@@ -1300,18 +1250,7 @@ async function checkWithAI(){
     return;
   }
   try{
-    const prompt=`あなたは放課後等デイサービスの先生です。子どもが書いた今日のアウトプット文章を添削し、モンスターの成長を判定してください。
-
-文章：「${text}」
-
-以下をJSON形式のみで返してください（日本語で、前後の説明なし）：
-{"score":1から5の整数,"is_gibberish":trueかfalse,"is_off_topic":trueかfalse,"feedback":"子どもへの優しいフィードバック2から3文","sentence_errors":[{"original":"誤りのある元の文","error_type":"誤りの種類","corrected":"修正後の文","example":"例文"}],"spoken_to_written":[{"before":"話し言葉","after":"書き言葉"}],"correction":"全体の提案。なければ空文字","exp_bonus":0から20の整数,"iv_gains":{"hp":0から3,"atk":0から3,"def":0から3,"spd":0から3},"iv_reason":"一言説明"}
-
-判定基準：
-- is_off_topic：レッスン・学習・プログラミング・勉強・制作・今日学んだこと・感じたことと全く関係ない内容（例：今日のご飯、テレビの話など）はtrue。is_off_topic=trueの場合exp_bonus=0、iv_gains全部0
-- is_gibberish：意味をなさない文・15文字未満・同じ文字の繰り返しはtrue
-- sentence_errorsは文法的誤りのみ最大3件。正しければ[]
-- exp_bonusは文章の質・長さ・具体性に応じて加点（話し言葉・文法誤りが多いと減点）`;
+    const prompt=`あなたは放課後等デイサービスの先生です。子どもが書いた今日のアウトプット文章を添削し、モンスターの成長を判定してください。\n\n文章：「${text}」\n\n以下をJSON形式のみで返してください（日本語で、前後の説明なし）：\n{"score":1から5の整数,"is_gibberish":trueかfalse,"feedback":"子どもへの優しいフィードバック2から3文","sentence_errors":[{"original":"誤りのある元の文","error_type":"誤りの種類","corrected":"修正後の文","example":"例文"}],"spoken_to_written":[{"before":"話し言葉","after":"書き言葉"}],"correction":"全体の提案。なければ空文字","exp_bonus":0から20の整数,"iv_gains":{"hp":0から3,"atk":0から3,"def":0から3,"spd":0から3},"iv_reason":"一言説明"}\n\nsentence_errorsは文法的誤りのみ最大3件。正しければ[]。is_gibberish=trueなら全部0。`;
     const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:prompt}]})});
     if(!res.ok) throw new Error('API error');
     const data=await res.json();
@@ -1359,9 +1298,7 @@ async function localCheck(text){
   }
   const iv_reason=['具体的な説明→こうげき↑','感情表現→HP↑','振り返り→ぼうぎょ↑','新発見→すばやさ↑'].filter((_,i)=>iv_gains[['atk','hp','def','spd'][i]]>0).join('・')||'文章を書いてモンスターが成長中…';
 
-  // オフトピック簡易チェック（レッスン関連キーワードが全くない場合）
-  const lessonKeywords=/プログラミング|コード|レッスン|学|授業|制作|作っ|作り|勉強|練習|できた|わかった|むずかし|難し|先生|教えて|教わ|新しい|発見|今日|ゲーム|パソコン|タイピング|ロボット|アプリ|スクラッチ|scratch/i;
-  const isOffTopic=!isGibberish&&!lessonKeywords.test(text)&&len>=10;
+  const sentence_errors=[];
   if(!isGibberish){
     const hasDesu=/です|ます|でした|ました/.test(text);
     const hasDA=/だ。|である。/.test(text);
@@ -1370,24 +1307,19 @@ async function localCheck(text){
   const spoken=[];
   [{re:/だよ[。！\s\n]/g,before:'〜だよ',after:'〜です'},{re:/だね[。！\s\n]/g,before:'〜だね',after:'〜ですね'},{re:/じゃん/g,before:'〜じゃん',after:'〜ではないですか'},{re:/超[^\s]/g,before:'超〜',after:'とても〜'},{re:/めっちゃ/g,before:'めっちゃ〜',after:'とても〜'}].forEach(p=>{if(p.re.test(text))spoken.push({before:p.before,after:p.after});});
 
-  showAIResult({score:isOffTopic?1:score,is_gibberish:isGibberish,is_off_topic:isOffTopic,feedback:qualityFeedback,quality_breakdown:isGibberish?null:{specificity:specificityScore,emotion:emotionScore,structure:structureScore},sentence_errors,correction:'',spoken_to_written:spoken,exp_bonus:bonus,iv_gains,iv_reason});
+  showAIResult({score,is_gibberish:isGibberish,feedback:qualityFeedback,quality_breakdown:isGibberish?null:{specificity:specificityScore,emotion:emotionScore,structure:structureScore},sentence_errors,correction:'',spoken_to_written:spoken,exp_bonus:bonus,iv_gains,iv_reason});
 }
 
 function showAIResult(result){
   lastAiResult=result;
   const box=document.getElementById('aiBox');
   box.classList.add('show');
-  if(result.is_gibberish||result.is_off_topic){
-    const msg=result.is_off_topic
-      ?'レッスンで学んだことや感じたことを書いてね！今日のご飯やテレビの話はEXPにならないよ😊'
-      :result.feedback;
-    document.getElementById('aiText').innerHTML=`<div style="color:var(--red);">${msg}</div>`;
-    document.getElementById('aiChips').innerHTML=result.is_off_topic
-      ?'<span class="ai-chip bad">📚 レッスンに関係する内容を書こう</span>'
-      :'<span class="ai-chip bad">❌ もう少し書こう</span>';
+  if(result.is_gibberish){
+    document.getElementById('aiText').innerHTML=`<div style="color:var(--red);">${result.feedback}</div>`;
+    document.getElementById('aiChips').innerHTML='<span class="ai-chip bad">❌ もう少し書こう</span>';
     document.getElementById('submitBtn').disabled=true;
     aiChecked=false;aiExpBonus=0;
-    showToast(result.is_off_topic?'レッスンに関係することを書いてね！':'もう少しくわしく書いてみよう！','var(--gold)');
+    showToast('もう少しくわしく書いてみよう！','var(--gold)');
     return;
   }
   let html=`<div style="margin-bottom:10px;">${result.feedback}</div>`;
@@ -1452,22 +1384,16 @@ function submitOutput(){
   let ivGains=null;
   if(didLevelUp&&s.iv){const result=growIV(s.iv);s.iv=result.iv;ivGains=result.gains;}
   const now=new Date();
-  const today=now.toISOString().slice(0,10);
   const dateStr=`${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
   const histItem={date:dateStr,text,selected,exp:gained,aiScore:lastAiResult?.score||0};
   if(!s.history)s.history=[];
   s.history.unshift(histItem);if(s.history.length>30)s.history.pop();
-  s.lastSubmitDate=today; // 今日の日付を保存
   updateStudent(currentUser.id,s);
   const allHist=getAllHistory();
   allHist.unshift({studentId:currentUser.id,name:s.name||currentUser.name,grade:s.grade||currentUser.grade,...histItem});
   if(allHist.length>200)allHist.pop();saveAllHistory(allHist);
   currentUser={...currentUser,...s};
   renderMonster();resetForm();
-  // 提出後は今日の入力完了画面に切り替え
-  document.getElementById('outputCard').style.display='none';
-  let doneMsg=document.getElementById('doneTodayMsg');
-  if(doneMsg) doneMsg.style.display='block';
   if(didLevelUp){setTimeout(()=>showLevelUpOverlay(newStage,s.iv,ivGains),700);spawnConfetti();}
   else{
     const ivMsg=lastAiResult?.iv_gains?IV_STATS.filter(st=>(lastAiResult.iv_gains[st.key]||0)>0).map(st=>`${st.icon}+${lastAiResult.iv_gains[st.key]}`).join(' '):'';
