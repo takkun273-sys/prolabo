@@ -1405,6 +1405,7 @@ async function localCheck(text){
   }
   const iv_reason=['具体的な説明→こうげき↑','感情表現→HP↑','振り返り→ぼうぎょ↑','新発見→すばやさ↑'].filter((_,i)=>iv_gains[['atk','hp','def','spd'][i]]>0).join('・')||'文章を書いてモンスターが成長中…';
 
+  const sentence_errors=[];
   // オフトピック簡易チェック（レッスン関連キーワードが全くない場合）
   const lessonKeywords=/プログラミング|コード|レッスン|学|授業|制作|作っ|作り|勉強|練習|できた|わかった|むずかし|難し|先生|教えて|教わ|新しい|発見|今日|ゲーム|パソコン|タイピング|ロボット|アプリ|スクラッチ|scratch/i;
   const isOffTopic=!isGibberish&&!lessonKeywords.test(text)&&len>=10;
