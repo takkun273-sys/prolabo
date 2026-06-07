@@ -322,6 +322,19 @@ input:checked+.slider:before{transform:translateX(20px);}
 
 /* バトル戦況ログを見やすく */
 .battle-log{border:1px solid rgba(167,139,250,.2);background:rgba(0,0,0,.45);}
+
+/* EXP獲得ポップアップ */
+.exp-popup{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:20;animation:expPopupAnim 2.2s cubic-bezier(.22,.61,.36,1) forwards;}
+@keyframes expPopupAnim{
+  0%{opacity:0;transform:translate(-50%,-20%)scale(.7);}
+  15%{opacity:1;transform:translate(-50%,-50%)scale(1.15);}
+  40%{opacity:1;transform:translate(-50%,-60%)scale(1);}
+  80%{opacity:1;transform:translate(-50%,-80%)scale(1);}
+  100%{opacity:0;transform:translate(-50%,-110%)scale(.9);}
+}
+.exp-popup-inner{text-align:center;text-shadow:0 0 20px rgba(251,191,36,.8);}
+.exp-popup-main{font-family:'Zen Maru Gothic',sans-serif;font-size:28px;font-weight:900;color:var(--gold);filter:drop-shadow(0 2px 8px rgba(251,191,36,.6));}
+.exp-popup-sub{font-size:13px;font-weight:700;color:var(--accent3);margin-top:4px;}
 </style>
 </head>
 <body>
@@ -1518,7 +1531,8 @@ function submitOutput(){
   if(didLevelUp){setTimeout(()=>showLevelUpOverlay(newStage,s.iv,ivGains),700);spawnConfetti();}
   else{
     const ivMsg=lastAiResult?.iv_gains?IV_STATS.filter(st=>(lastAiResult.iv_gains[st.key]||0)>0).map(st=>`${st.icon}+${lastAiResult.iv_gains[st.key]}`).join(' '):'';
-    showToast(`✨ ＋${gained} EXP${ivMsg?' | '+ivMsg:''}`,'var(--green)');
+    showExpPopup(gained, ivMsg);
+    showToast(`✨ ＋${gained} EXP！`,'var(--green)');
   }
 }
 
@@ -1539,6 +1553,52 @@ function showLevelUpOverlay(stage,iv,ivGains){
   document.getElementById('lvOverlay').classList.add('show');
 }
 function closeOverlay(){document.getElementById('lvOverlay').classList.remove('show');}
+
+
+// ===== Toast =====
+let toastTimer=null;
+function showToast(msg, color='var(--green)'){
+  const t=document.getElementById('toast');
+  if(!t) return;
+  if(toastTimer) clearTimeout(toastTimer);
+  t.textContent=msg;
+  t.style.background=color;
+  t.style.color=(color==='var(--green)'||color==='#34d399')?'#052e1a':'white';
+  t.classList.add('show');
+  toastTimer=setTimeout(()=>t.classList.remove('show'), 2800);
+}
+
+// ===== EXP獲得ポップアップ演出 =====
+function showExpPopup(gained, ivMsg=''){
+  // 既存のポップアップを削除
+  document.querySelectorAll('.exp-popup').forEach(el=>el.remove());
+  const popup = document.createElement('div');
+  popup.className = 'exp-popup';
+  popup.innerHTML = `<div class="exp-popup-inner">
+    <div class="exp-popup-main">✨ ＋${gained} EXP</div>
+    ${ivMsg ? `<div class="exp-popup-sub">${ivMsg}</div>` : ''}
+  </div>`;
+  // モンスターカードの直下に追加
+  const monCard = document.querySelector('.monster-card');
+  if(monCard){
+    monCard.style.position='relative';
+    monCard.appendChild(popup);
+    setTimeout(()=>popup.remove(), 2200);
+  }
+}
+
+// ===== Confetti =====
+function spawnConfetti(){
+  const colors=['#ff6b9d','#a78bfa','#38bdf8','#fbbf24','#34d399','#fb923c'];
+  for(let i=0;i<40;i++){
+    const c=document.createElement('div');
+    c.className='conf';
+    const size=6+Math.random()*8;
+    c.style.cssText=`left:${10+Math.random()*80}%;top:-10px;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${1.2+Math.random()*1.2}s;animation-delay:${Math.random()*0.5}s;border-radius:${Math.random()>0.5?'50%':'2px'};`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), 2500);
+  }
+}
 
 initStars();
 
