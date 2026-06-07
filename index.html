@@ -43,10 +43,10 @@ body{background:var(--bg);color:var(--text);font-family:'M PLUS Rounded 1c',sans
 .monster-name{font-family:'Zen Maru Gothic',sans-serif;font-size:22px;font-weight:900;color:var(--gold);}
 .monster-grade{font-size:11px;color:var(--text-dim);background:rgba(255,255,255,.06);padding:3px 10px;border-radius:99px;}
 .monster-center{display:flex;flex-direction:column;align-items:center;padding:8px 0 12px;}
-.monster-wrap{position:relative;width:140px;height:140px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.monster-wrap{position:relative;width:140px;height:140px;display:flex;align-items:center;justify-content:center;}
 .monster-aura{position:absolute;inset:-12px;border-radius:50%;animation:aura-pulse 2.8s ease-in-out infinite;}
 @keyframes aura-pulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.2);opacity:1}}
-#monster-svg{width:120px;height:120px;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 6px 18px rgba(167,139,250,.5));transition:all .8s ease;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);}
+#monster-svg{width:120px;height:120px;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 6px 18px rgba(167,139,250,.5));transition:all .8s ease;}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 .lv-badge{margin-top:10px;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:white;font-weight:800;font-size:12px;padding:4px 18px;border-radius:99px;letter-spacing:1px;}
 .exp-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
@@ -446,7 +446,7 @@ input:checked+.slider:before{transform:translateX(20px);}
         <div class="monster-wrap">
           <div class="monster-aura" id="monAura"></div>
           <svg id="monster-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"></svg>
-          <img id="monster-img" style="display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);animation:float 3s ease-in-out infinite;filter:drop-shadow(0 6px 18px rgba(167,139,250,.45));border-radius:8px;object-fit:contain;width:130px;height:130px;"/>
+          <img id="monster-img" style="display:none;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 6px 18px rgba(167,139,250,.45));border-radius:8px;object-fit:contain;width:130px;height:130px;"/>
         </div>
         <div class="lv-badge" id="lvBadge">Lv.1 たまご</div>
       </div>
