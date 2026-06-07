@@ -1354,7 +1354,10 @@ async function checkWithAI(){
 - is_gibberish：意味をなさない文・15文字未満・同じ文字の繰り返しはtrue
 - sentence_errorsは文法的誤りのみ最大3件。正しければ[]
 - exp_bonusは文章の質・長さ・具体性に応じて加点（話し言葉・文法誤りが多いと減点）`;
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:prompt}]})});
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15秒タイムアウト
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:800,messages:[{role:'user',content:prompt}]}),signal:controller.signal});
+    clearTimeout(timeoutId);
     if(!res.ok) throw new Error('API error');
     const data=await res.json();
     const raw=data.content[0].text;
@@ -1363,9 +1366,10 @@ async function checkWithAI(){
   }catch(e){
     console.error(e);
     await localCheck(text);
+  }finally{
+    btn.textContent='🤖 もう一度チェック';
+    btn.disabled=false;
   }
-  btn.textContent='🤖 もう一度チェック';
-  btn.disabled=false;
 }
 
 async function localCheck(text){
