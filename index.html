@@ -335,6 +335,17 @@ input:checked+.slider:before{transform:translateX(20px);}
 .exp-popup-inner{text-align:center;text-shadow:0 0 20px rgba(251,191,36,.8);}
 .exp-popup-main{font-family:'Zen Maru Gothic',sans-serif;font-size:28px;font-weight:900;color:var(--gold);filter:drop-shadow(0 2px 8px rgba(251,191,36,.6));}
 .exp-popup-sub{font-size:13px;font-weight:700;color:var(--accent3);margin-top:4px;}
+
+/* ===== 図鑑 ===== */
+.zukan-sub{font-size:12px;color:var(--text-sub);margin-bottom:12px;}
+.zukan-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:12px;}
+.zukan-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px 6px 8px;text-align:center;transition:border-color .2s;}
+.zukan-card:hover{border-color:rgba(167,139,250,.4);}
+.zukan-card img{width:72px;height:72px;object-fit:contain;border-radius:8px;display:block;margin:0 auto 6px;}
+.zukan-card.silhouette img{filter:brightness(0) invert(0);opacity:.4;}
+.zukan-name{font-size:11px;font-weight:700;color:var(--text);line-height:1.3;}
+.zukan-stage{font-size:10px;color:var(--accent2);margin-top:2px;}
+.zukan-type{font-size:13px;margin-bottom:2px;}
 </style>
 </head>
 <body>
@@ -383,8 +394,7 @@ input:checked+.slider:before{transform:translateX(20px);}
       </div>
       <button class="btn-primary" onclick="childLogin()">ログイン ▶</button>
       <div class="login-switch">はじめて？ <button class="link-btn" onclick="showRegister()">アカウントをつくる</button></div>
-      <hr class="divider-line">
-      <div class="login-switch">職員の方は <button class="link-btn" onclick="showAdminLogin()">管理者ログイン</button></div>
+
     </div>
     <div class="login-card hidden" id="registerPanel">
       <h2>✨ あたらしいアカウント</h2>
@@ -412,14 +422,31 @@ input:checked+.slider:before{transform:translateX(20px);}
       <button class="btn-primary" onclick="doRegister()">アカウントをつくる ▶</button>
       <div class="login-switch"><button class="link-btn" onclick="showLogin()">← もどる</button></div>
     </div>
-    <div class="login-card hidden" id="adminLoginPanel">
+
+  </div>
+  </div>
+</div>
+
+
+<!-- ADMIN LOGIN PAGE -->
+<div class="page" id="page-adminlogin">
+  <div style="position:relative;z-index:1;">
+  <div class="login-wrap">
+    <div class="login-logo">
+      <div class="logo-icon">🔐</div>
+      <h1>プロラボ 管理画面</h1>
+      <p>放課後等デイサービス プロラボ</p>
+    </div>
+    <div class="login-card">
       <h2>🔐 職員ログイン</h2>
       <div class="input-group">
         <div class="input-label">管理者パスワード</div>
-        <input type="password" id="adminPw" placeholder="パスワードを入力">
+        <input type="password" id="adminPw" placeholder="パスワードを入力" onkeydown="if(event.key==='Enter')adminLogin()">
       </div>
       <button class="btn-primary" onclick="adminLogin()">ログイン ▶</button>
-      <div class="login-switch"><button class="link-btn" onclick="showLogin()">← もどる</button></div>
+      <div class="login-switch" style="margin-top:16px;">
+        <button class="link-btn" onclick="goChildLogin()">← 児童ログイン画面へ</button>
+      </div>
     </div>
   </div>
   </div>
@@ -635,6 +662,7 @@ input:checked+.slider:before{transform:translateX(20px);}
       <button class="tab-btn active" onclick="adminTab('students')">👥 児童一覧</button>
       <button class="tab-btn" onclick="adminTab('history')">📋 記録</button>
       <button class="tab-btn" onclick="adminTab('battle')">⚔️ バトル記録</button>
+      <button class="tab-btn" onclick="adminTab('zukan')">📖 図鑑</button>
       <button class="tab-btn" onclick="adminTab('settings')">⚙️ 設定</button>
     </div>
     <div id="tab-students">
@@ -653,6 +681,18 @@ input:checked+.slider:before{transform:translateX(20px);}
       <div class="card">
         <div class="card-title">⚔️ バトル記録</div>
         <div id="battleHistList"></div>
+      </div>
+    </div>
+    <div id="tab-zukan" class="hidden">
+      <div class="card">
+        <div class="card-title">📖 マイモンスター図鑑</div>
+        <div class="zukan-sub">自分が育てているモンスター</div>
+        <div id="zukanMyList" class="zukan-grid"></div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <div class="card-title">🌟 全キャラクター図鑑</div>
+        <div class="zukan-sub">未入手はシルエット表示</div>
+        <div id="zukanAllList" class="zukan-grid"></div>
       </div>
     </div>
     <div id="tab-settings" class="hidden">
@@ -956,14 +996,15 @@ function saveSettingsObj(d){localStorage.setItem('plm_settings',JSON.stringify(d
 // ===== 管理画面 =====
 function adminTab(tab){
   document.querySelectorAll('.admin-tabs .tab-btn').forEach((b,i)=>{
-    b.classList.toggle('active',['students','history','battle','settings'][i]===tab);
+    b.classList.toggle('active',['students','history','battle','zukan','settings'][i]===tab);
   });
-  ['students','history','battle','settings'].forEach(t=>{
+  ['students','history','battle','zukan','settings'].forEach(t=>{
     document.getElementById('tab-'+t).classList.toggle('hidden',t!==tab);
   });
   if(tab==='students') renderAdminStudents();
   if(tab==='history')  renderAdminHistory();
   if(tab==='battle')   renderAdminBattles();
+  if(tab==='zukan')    renderZukan();
   if(tab==='settings') loadAdminSettings();
 }
 
@@ -1081,9 +1122,9 @@ function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.
 function initStars(){const c=document.getElementById('starfield');for(let i=0;i<55;i++){const s=document.createElement('div');s.className='star';const sz=1+Math.random()*2;s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${sz}px;height:${sz}px;--d:${2+Math.random()*4}s;animation-delay:${Math.random()*5}s;`;c.appendChild(s);}}
 
 // Login panels
-function showLogin(){['loginPanel'].forEach(id=>document.getElementById(id).classList.remove('hidden'));['registerPanel','adminLoginPanel'].forEach(id=>document.getElementById(id).classList.add('hidden'));}
-function showRegister(){document.getElementById('loginPanel').classList.add('hidden');document.getElementById('registerPanel').classList.remove('hidden');document.getElementById('adminLoginPanel').classList.add('hidden');}
-function showAdminLogin(){document.getElementById('loginPanel').classList.add('hidden');document.getElementById('registerPanel').classList.add('hidden');document.getElementById('adminLoginPanel').classList.remove('hidden');}
+function showLogin(){['loginPanel'].forEach(id=>document.getElementById(id).classList.remove('hidden'));['registerPanel'].forEach(id=>document.getElementById(id).classList.add('hidden'));}
+function showRegister(){document.getElementById('loginPanel').classList.add('hidden');document.getElementById('registerPanel').classList.remove('hidden');}
+function showAdminLogin(){showPage('adminlogin');}
 
 function childLogin(){
   const name=document.getElementById('loginName').value.trim().toLowerCase();
@@ -1125,7 +1166,8 @@ function adminLogin(){
   }
 }
 function childLogout(){currentUser=null;showPage('login');showLogin();}
-function adminLogout(){showPage('login');showLogin();}
+function goChildLogin(){showPage('login');showLogin();}
+function adminLogout(){showPage('adminlogin');}
 
 // Child page
 function enterChildPage(){
@@ -1615,7 +1657,67 @@ function spawnConfetti(){
   }
 }
 
+
+// ===== 図鑑 =====
+function renderZukan(){
+  const students = getStudents();
+  const typeMap = {atk:{label:'朱雀',icon:'🔴'}, spd:{label:'青龍',icon:'🔵'}, hp:{label:'白虎',icon:'⬜'}, def:{label:'玄武',icon:'🟢'}};
+  const stageKeys = ['egg','young','grown','final'];
+
+  // ── マイモンスター ──
+  const myEl = document.getElementById('zukanMyList');
+  const myEntries = Object.values(students);
+  if(myEntries.length === 0){
+    myEl.innerHTML = '<div style="color:var(--text-sub);font-size:13px;">まだモンスターがいないよ</div>';
+  } else {
+    myEl.innerHTML = myEntries.map(s => {
+      const stage = s.stage || 0;
+      const type = s.shishinType || 'atk';
+      const stageKey = stageKeys[Math.min(stage, 3)];
+      const imgSrc = SHISHIN_STAGE_IMG[`${stageKey}_${type}`] || '';
+      const stageName = STAGES[stage] ? STAGES[stage].name : 'たまご';
+      const stageIcon = STAGES[stage] ? STAGES[stage].icon : '🥚';
+      const tm = typeMap[type] || typeMap.atk;
+      return `<div class="zukan-card">
+        <img src="${imgSrc}" alt="${s.name}">
+        <div class="zukan-type">${tm.icon} ${tm.label}</div>
+        <div class="zukan-name">${s.name}</div>
+        <div class="zukan-stage">${stageIcon} ${stageName}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── 全キャラ図鑑（4進化×4四神 = 16種） ──
+  const allEl = document.getElementById('zukanAllList');
+  const obtained = new Set(myEntries.map(s => s.shishinType || 'atk'));
+  const allCards = [];
+  ['egg','young','grown','final'].forEach((sk, si) => {
+    ['atk','spd','hp','def'].forEach(type => {
+      const tm = typeMap[type];
+      const stageName = STAGES[si] ? STAGES[si].name : sk;
+      const stageIcon = STAGES[si] ? STAGES[si].icon : '🥚';
+      const imgSrc = SHISHIN_STAGE_IMG[`${sk}_${type}`] || '';
+      const hasIt = obtained.has(type);
+      allCards.push(`<div class="zukan-card${hasIt ? '' : ' silhouette'}">
+        <img src="${imgSrc}" alt="${tm.label}">
+        <div class="zukan-type">${hasIt ? tm.icon : '❓'} ${hasIt ? tm.label : '？？？'}</div>
+        <div class="zukan-name">${hasIt ? tm.label : '未入手'}</div>
+        <div class="zukan-stage">${stageIcon} ${stageName}</div>
+      </div>`);
+    });
+  });
+  allEl.innerHTML = allCards.join('');
+}
+
 initStars();
+// URLパラメータで管理画面に自動遷移
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  if(params.has('admin')){
+    showPage('adminlogin');
+  }
+})();
+
 
 // PWA: Service Worker登録
 if('serviceWorker' in navigator){
