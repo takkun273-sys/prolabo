@@ -1398,25 +1398,28 @@ async function localCheck(text){
   else if(!hasJoshi) gibberishMsg='「わたしは〜」「〜を〜した」のように、主語を入れて書いてみよう！';
   else if(!hasJutsugo) gibberishMsg='「〜しました」「〜できました」のように、文の終わりまで書いてみよう！';
 
-  const specificityScore=(()=>{let s=0;if(/なぜ|理由|から|ので|ため/.test(text))s+=2;if(/どうやって|手順|まず|次に|そして|また/.test(text))s+=2;if(/例えば|具体的|たとえば/.test(text))s+=1;return Math.min(s,4);})();
-  const emotionScore=(()=>{let s=0;if(/うれし|楽し|たのし|おもしろ|面白|すご|びっくり|驚|感動/.test(text))s+=2;if(/難し|むずかし|大変|がんばっ|頑張|くやし|悔し/.test(text))s+=2;if(/もっと|次は|これから|またやりたい|やってみたい/.test(text))s+=1;return Math.min(s,4);})();
-  const structureScore=(()=>{let s=0;const sents=text.split(/[。．！!]/).filter(t=>t.trim().length>0);if(sents.length>=2)s+=2;if(sents.length>=3)s+=1;if(/しかし|でも|けれど|ただし|だから|そのため|つまり|なので/.test(text))s+=1;return Math.min(s,4);})();
+  const specificityScore=(()=>{let s=0;if(/なぜ|理由|から|ので|ため|おかげ|せいで/.test(text))s+=2;if(/どうやって|手順|まず|最初に|次に|そして|また|さいごに|最後に/.test(text))s+=2;if(/例えば|具体的|たとえば|[0-9０-９]+|回|個|番/.test(text))s+=1;if(/より|ちがい|同じ|比べ|気づ|発見|はじめて|初めて/.test(text))s+=1;return Math.min(s,4);})();
+  const emotionScore=(()=>{let s=0;if(/うれし|嬉し|楽し|たのし|おもしろ|面白|すご|すてき|素敵|びっくり|驚|感動|やった|よかっ|好き|最高|さいこう|いい感じ|うまく|じょうず|上手/.test(text))s+=2;if(/難し|むずかし|大変|たいへん|がんばっ|頑張|くやし|悔し|むずかった|できなかっ|失敗|まちがえ|もっとうまく/.test(text))s+=2;if(/もっと|次は|これから|またやりたい|やってみたい|挑戦|ちょうせん|続け|つづけ|練習|れんしゅう/.test(text))s+=1;return Math.min(s,4);})();
+  const structureScore=(()=>{let s=0;const sents=text.split(/[。．！!？?]/).filter(t=>t.trim().length>0);if(sents.length>=2)s+=2;if(sents.length>=3)s+=1;if(/しかし|でも|けれど|ただし|だから|そのため|つまり|なので|それで|だけど|なぜなら/.test(text))s+=1;return Math.min(s,4);})();
   const totalQuality=specificityScore+emotionScore+structureScore;
   const score=isGibberish?1:totalQuality>=10?5:totalQuality>=7?4:totalQuality>=4?3:totalQuality>=2?2:1;
-  const lenBonus=isGibberish?0:Math.min(Math.floor(len/12),8);
-  const qualityBonus=isGibberish?0:specificityScore+emotionScore+structureScore;
-  const bonus=lenBonus+qualityBonus;
-  const qualityFeedback=isGibberish?gibberishMsg:score>=5?'素晴らしい！具体的で気持ちもよく伝わる文章だよ！':score>=4?'上手に書けてるね！もう少し感想や理由を加えるともっと良くなるよ。':score>=3?'いいね！「なぜそう思ったか」も書けるともっとEXPが増えるよ。':score>=2?'もう少し詳しく書いてみよう。':'どんなことを学んだか、もっと具体的に書いてみよう！';
+  const lenBonus=isGibberish?0:Math.min(Math.floor(len/15),8);
+  const qualityBonus=isGibberish?0:specificityScore*2+emotionScore*2+structureScore;
+  const bonus=Math.min(lenBonus+qualityBonus,20);
+  const specificityHint=specificityScore<2?'「なぜそう思ったか」「どうやったか」を書くとEXPアップ！':'';
+  const emotionHint=emotionScore<2?'「うれしかった」「むずかしかった」など気持ちも書いてみよう！':'';
+  const qualityFeedback=isGibberish?gibberishMsg:score>=5?'素晴らしい！理由も気持ちもバッチリ！最高のアウトプットだよ！':score>=4?`上手に書けてるね！${specificityHint||emotionHint||'この調子で続けよう！'}`:score>=3?`いいね！${specificityHint||emotionHint||'もう1文加えるともっとEXPが増えるよ。'}`:score>=2?`もう少し詳しく書いてみよう。${specificityHint}`:`どんなことをしたか書いてみよう！${emotionHint}`;
 
   const iv_gains={hp:0,atk:0,def:0,spd:0};
   if(!isGibberish){
     if(len>=80){iv_gains.hp+=2;}else if(len>=40){iv_gains.hp+=1;}
-    if(/なぜ|理由|から|ので|ため|どうやって|手順|まず|次に/.test(text)) iv_gains.atk+=2;
-    if(/難し|むずかし|失敗|間違|わからな|できなかった|次は|改善/.test(text)) iv_gains.def+=2;
-    if(/速く|早く|すぐ|初めて|新しい|はじめ|わかった|できた/.test(text)) iv_gains.spd+=1;
+    if(specificityScore>=2) iv_gains.atk+=2;
+    if(emotionScore>=2) iv_gains.hp=Math.min(3,iv_gains.hp+1);
+    if(/難し|むずかし|失敗|間違|わからな|できなかった|次は|改善|もっとうまく/.test(text)) iv_gains.def+=2;
+    if(/速く|早く|すぐ|初めて|はじめて|新しい|わかった|できた|発見/.test(text)) iv_gains.spd+=1;
     if(score>=4) Object.keys(iv_gains).forEach(k=>{if(iv_gains[k]>0) iv_gains[k]=Math.min(3,iv_gains[k]+1);});
   }
-  const iv_reason=['具体的な説明→こうげき↑','感情表現→HP↑','振り返り→ぼうぎょ↑','新発見→すばやさ↑'].filter((_,i)=>iv_gains[['atk','hp','def','spd'][i]]>0).join('・')||'文章を書いてモンスターが成長中…';
+  const iv_reason=['具体性→こうげき↑','気持ち→HP↑','ふりかえり→ぼうぎょ↑','新発見→すばやさ↑'].filter((_,i)=>iv_gains[['atk','hp','def','spd'][i]]>0).join('・')||'文章を書いてモンスターが成長中…';
 
   const sentence_errors=[];
   // オフトピック簡易チェック（レッスン関連キーワードが全くない場合）
@@ -1493,6 +1496,14 @@ function showAIResult(result){
 
 // ===== 提出 =====
 function submitOutput(){
+  // ===== 二重提出ガード =====
+  const _today=new Date().toISOString().slice(0,10);
+  const _s=getStudent(currentUser.id);
+  if((_s.lastSubmitDate||'')=== _today){showToast('今日はもう提出済みだよ！','var(--green)');return;}
+  const submitBtn=document.getElementById('submitBtn');
+  if(submitBtn.dataset.submitting==='1'){return;} // 連打防止
+  submitBtn.dataset.submitting='1';
+  submitBtn.disabled=true;
   if(!aiChecked){showToast('先にAIチェックをしよう！','var(--accent1)');return;}
   const text=document.getElementById('freeText').value.trim();
   if(!text){showToast('文章を書いてね！','var(--accent1)');return;}
