@@ -788,6 +788,14 @@ input:checked+.slider:before{transform:translateX(20px);}
         <select id="resetSelect" style="margin-bottom:10px;"><option value="">-- 児童を選択 --</option></select>
         <button onclick="resetStudent()" style="width:100%;padding:11px;background:rgba(248,113,113,.1);border:1.5px solid rgba(248,113,113,.3);border-radius:12px;color:var(--red);font-size:14px;font-weight:700;cursor:pointer;font-family:'M PLUS Rounded 1c',sans-serif;">この児童のEXP・記録をリセット</button>
       </div>
+      <div class="card mt14">
+        <div class="card-title">📦 バックアップ（エクスポート / インポート）</div>
+        <div style="font-size:13px;color:var(--text-dim);margin-bottom:12px;line-height:1.6;">児童データ・記録・設定をファイルに保存し、別のPC・タブレットに引き継げます。デモで端末をまたぐ前に必ずエクスポートしてください。<br><span style="color:var(--gold);">※APIキー・管理者パスワードは安全のためファイルに含まれません。</span></div>
+        <button onclick="exportData()" style="width:100%;padding:12px;background:rgba(56,189,248,.12);border:1.5px solid rgba(56,189,248,.4);border-radius:12px;color:var(--accent3);font-size:14px;font-weight:700;cursor:pointer;font-family:'M PLUS Rounded 1c',sans-serif;margin-bottom:10px;">⬇️ データをエクスポート（保存）</button>
+        <input type="file" id="importFileInput" accept=".json,application/json" style="display:none;" onchange="importData(this)">
+        <button onclick="document.getElementById('importFileInput').click()" style="width:100%;padding:12px;background:rgba(52,211,153,.1);border:1.5px solid rgba(52,211,153,.35);border-radius:12px;color:var(--green);font-size:14px;font-weight:700;cursor:pointer;font-family:'M PLUS Rounded 1c',sans-serif;">⬆️ データをインポート（読み込み）</button>
+        <div style="font-size:12px;color:var(--text-dim);margin-top:8px;">⚠️ インポートすると、この端末の現在のデータは上書きされます。</div>
+      </div>
     </div>
   </div>
 </div>
@@ -1198,6 +1206,83 @@ function resetStudent(){
   }
 }
 function getAllHistory(){try{return JSON.parse(localStorage.getItem('plm_history')||'[]')}catch(e){return[]}}
+
+/* ===== バックアップ：エクスポート / インポート ===== */
+function exportData(){
+  try{
+    const data={
+      app:'prolabo-my-monster',
+      version:1,
+      exportedAt:new Date().toISOString(),
+      students:getStudents(),
+      history:getAllHistory(),
+      settings:getSettings()
+    };
+    const count=Object.keys(data.students).length;
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    const d=new Date();
+    const pad=n=>String(n).padStart(2,'0');
+    a.href=url;
+    a.download=`プロラボ_モンスター育成_バックアップ_${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    showToast(`児童${count}名分のデータを保存しました`,'var(--green)');
+  }catch(e){
+    showToast('エクスポートに失敗しました','var(--red)');
+    console.error(e);
+  }
+}
+
+function importData(input){
+  const file=input.files&&input.files[0];
+  input.value=''; // 同じファイルを再選択できるようにリセット
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    let data;
+    try{
+      data=JSON.parse(ev.target.result);
+    }catch(e){
+      showToast('ファイルを読み込めませんでした（JSON形式ではありません）','var(--red)');
+      return;
+    }
+    // バリデーション
+    if(!data||data.app!=='prolabo-my-monster'||typeof data.students!=='object'||!Array.isArray(data.history)){
+      showToast('このアプリのバックアップファイルではありません','var(--red)');
+      return;
+    }
+    const newCount=Object.keys(data.students).length;
+    const curCount=Object.keys(getStudents()).length;
+    const exportedAt=data.exportedAt?new Date(data.exportedAt).toLocaleString('ja-JP'):'不明';
+    const msg=`バックアップをインポートします。\n\n`+
+      `📅 保存日時: ${exportedAt}\n`+
+      `👥 児童データ: ${newCount}名分\n`+
+      `📋 記録: ${data.history.length}件\n\n`+
+      `⚠️ この端末の現在のデータ（児童${curCount}名分）は上書きされます。\nよろしいですか？`;
+    if(!confirm(msg))return;
+    try{
+      localStorage.setItem('plm_students',JSON.stringify(data.students));
+      localStorage.setItem('plm_history',JSON.stringify(data.history));
+      if(data.settings&&typeof data.settings==='object'){
+        localStorage.setItem('plm_settings',JSON.stringify(data.settings));
+      }
+      showToast('インポートが完了しました。再読み込みします…','var(--green)');
+      setTimeout(()=>location.reload(),1200);
+    }catch(e){
+      showToast('インポートに失敗しました（容量不足の可能性があります）','var(--red)');
+      console.error(e);
+    }
+  };
+  reader.onerror=function(){
+    showToast('ファイルの読み込みに失敗しました','var(--red)');
+  };
+  reader.readAsText(file);
+}
+
 function saveAllHistory(d){localStorage.setItem('plm_history',JSON.stringify(d))}
 function getApiKey(){return localStorage.getItem('plm_apikey')||''}
 function getStudent(id){return getStudents()[id]||null}
