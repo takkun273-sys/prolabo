@@ -1762,18 +1762,6 @@ function renderHistory(){
 
 // ===== AI添削 =====
 async function checkWithAI(){
-  if(typeof TEST_BUILD_LOCAL_AI_FALLBACK!=='undefined' && TEST_BUILD_LOCAL_AI_FALLBACK){
-    try{
-      if(typeof localCheck==='function'){
-        const result = localCheck();
-        if(result && typeof renderAIResult==='function') renderAIResult(result);
-        return result;
-      }
-    }catch(e){
-      console.error('端末内判定エラー',e);
-    }
-  }
-
   const text=document.getElementById('freeText').value.trim();
   const lessonName=(document.getElementById('lessonNameInput')?.value||'').trim();
   if(text.length<MIN_CHAR){showToast(`あと${MIN_CHAR-text.length}文字書いてみよう！`,'var(--accent1)');return;}
@@ -1803,12 +1791,6 @@ async function checkWithAI(){
   btn.textContent='🤖 もう一度チェック';
   btn.disabled=false;
 
-  finally{
-    const aiBtn = document.getElementById('aiCheckBtn') || document.querySelector('[data-ai-check]');
-    if(aiBtn){ aiBtn.disabled=false; aiBtn.textContent='🤖 AIチェック'; }
-    const loading = document.getElementById('aiLoading') || document.querySelector('.ai-loading');
-    if(loading) loading.classList.add('hidden');
-  }
 }
 
 async function localCheck(text, lessonName=""){
