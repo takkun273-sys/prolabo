@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>プロラボマスターズ - 全校舎テスト版 Ver.7</title>
+<title>プロラボマスターズ - 全校舎テスト版 Ver.8</title>
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -304,7 +304,7 @@ textarea.test-feedback:focus{border-color:var(--accent2);}
 </style>
 </head>
 <body>
-<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.7</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span></div>
+<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.8</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span></div>
 
 <div id="starfield"></div>
 <div class="overlay" id="lvOverlay">
@@ -383,7 +383,7 @@ textarea.test-feedback:focus{border-color:var(--accent2);}
 
     <div class="login-card hidden" id="feedbackPanel">
       <h2>💬 テストフィードバック</h2>
-      <div style="font-size:12px;color:var(--text-dim);line-height:1.7;margin-bottom:10px;">実際に触った感想を5項目で教えてください。送信時に回答内容をコピーし、Googleフォームを開きます。</div>
+      <div style="font-size:12px;color:var(--text-dim);line-height:1.7;margin-bottom:10px;">実際に触った感想を5項目で教えてください。送信時に回答内容をGoogleフォームへ自動入力して開きます。</div>
       <div class="feedback-stars"><span>① 操作の分かりやすさ</span><select id="fbEase"><option>5</option><option>4</option><option selected>3</option><option>2</option><option>1</option></select></div>
       <div class="feedback-stars"><span>② 30文字振り返りの適切さ</span><select id="fbThirty"><option>5</option><option>4</option><option selected>3</option><option>2</option><option>1</option></select></div>
       <div class="feedback-stars"><span>③ 育成の分かりやすさ</span><select id="fbGrowth"><option>5</option><option>4</option><option selected>3</option><option>2</option><option>1</option></select></div>
@@ -771,6 +771,7 @@ textarea.test-feedback:focus{border-color:var(--accent2);}
 // 下記URLを、佐伯さんが作成したGoogleフォームの公開URLに置き換えてください。
 // 例: https://docs.google.com/forms/d/e/XXXXXXXXXXXX/viewform
 const FEEDBACK_GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScDmPtIL6jxb1zuMA4KzxpOdK60HiVcQpqzzsYmKhjw5QDnig/viewform";
+const FEEDBACK_GOOGLE_FORM_ENTRY = "entry.1642200862";
 
 // 回答内容は自動でクリップボードへコピーしてからGoogleフォームを開きます。
 // Googleフォーム側には「自由記述（回答内容貼り付け用）」の設問を1つ用意しておけば運用できます。
@@ -1382,7 +1383,7 @@ function showFeedbackPanel(){
   if(!activeSchoolId()){showToast('先に校舎を選択してください','var(--gold)');return;}
   ['loginPanel','registerPanel','adminLoginPanel'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
   document.getElementById('feedbackPanel')?.classList.remove('hidden');
-  const st=document.getElementById('feedbackSendStatus');if(st){st.textContent=googleFormConfigured()?'📝 回答内容をコピーしてGoogleフォームを開きます。':'⚠️ GoogleフォームURLの設定前です。送信時は端末保存＋コピーになります。';st.style.color=googleFormConfigured()?'var(--green)':'var(--gold)';}
+  const st=document.getElementById('feedbackSendStatus');if(st){st.textContent=googleFormConfigured()?'📝 回答内容をGoogleフォームへ自動入力して開きます。':'⚠️ GoogleフォームURLの設定前です。送信時は端末保存＋コピーになります。';st.style.color=googleFormConfigured()?'var(--green)':'var(--gold)';}
 }
 async function createSampleStudents(){
   if(!activeSchoolId()){showToast('先にテストする校舎を選んでください','var(--gold)');return;}
@@ -1436,25 +1437,27 @@ async function saveTestFeedback(){
     operation:+document.getElementById('fbOperation').value,
     comment:document.getElementById('fbComment').value.trim()
   };
+
   const list=getFeedback();list.unshift(item);saveFeedback(list);
   const txt=feedbackText(item);
 
-  if(btn){btn.disabled=true;btn.textContent='準備中…';}
+  if(btn){btn.disabled=true;btn.textContent='Googleフォームを開いています…';}
+
   try{
-    try{await navigator.clipboard.writeText(txt);}catch(e){}
-    if(googleFormConfigured()){
-      window.open(FEEDBACK_GOOGLE_FORM_URL,'_blank','noopener');
-      if(status){
-        status.textContent='✅ 回答内容をコピーしました。開いたGoogleフォームの自由記述欄へ貼り付けて送信してください。';
-        status.style.color='var(--green)';
-      }
-      showToast('回答内容をコピーしてGoogleフォームを開きました','var(--green)');
-    }else{
-      if(status){
-        status.textContent='⚠️ GoogleフォームURLが未設定です。回答内容はこの端末に保存し、クリップボードへコピーしました。';
-        status.style.color='var(--gold)';
-      }
-      showToast('GoogleフォームURLが未設定です','var(--gold)');
+    const url = `${FEEDBACK_GOOGLE_FORM_URL}?usp=pp_url&${FEEDBACK_GOOGLE_FORM_ENTRY}=${encodeURIComponent(txt)}`;
+    window.open(url,'_blank','noopener');
+
+    if(status){
+      status.textContent='✅ 回答内容をGoogleフォームへ自動入力しました。開いたフォームで内容を確認し、「送信」を押してください。';
+      status.style.color='var(--green)';
+    }
+    showToast('Googleフォームに回答を自動入力しました','var(--green)');
+  }catch(e){
+    console.error(e);
+    try{await navigator.clipboard.writeText(txt);}catch(err){}
+    if(status){
+      status.textContent='⚠️ フォームを開けませんでした。回答内容はコピー済みです。';
+      status.style.color='var(--gold)';
     }
   }finally{
     if(btn){btn.disabled=false;btn.textContent='📝 Googleフォームで送信';}
