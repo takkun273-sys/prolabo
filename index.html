@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>プロラボマスターズ - 全校舎テスト版 Ver.9</title>
+<title>プロラボマスターズ - 全校舎テスト版 Ver.9.1</title>
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -301,10 +301,70 @@ textarea.test-feedback:focus{border-color:var(--accent2);}
 .sample-login-box{margin-top:12px;border:1px dashed rgba(52,211,153,.45);background:rgba(52,211,153,.07);border-radius:12px;padding:11px;font-size:11px;line-height:1.7;color:var(--text-dim);}
 .sample-login-box b{color:var(--green);}
 
+
+.update-history-btn{
+  border:none;background:rgba(37,16,6,.16);color:#251006;border-radius:999px;
+  padding:6px 10px;font-size:11px;font-weight:900;cursor:pointer;
+  font-family:'M PLUS Rounded 1c',sans-serif;white-space:nowrap;
+}
+.update-history-btn:hover{background:rgba(37,16,6,.26);}
+.update-modal{
+  position:fixed;inset:0;z-index:5000;background:rgba(5,4,20,.82);
+  display:flex;align-items:center;justify-content:center;padding:18px;
+  backdrop-filter:blur(6px);
+}
+.update-modal.hidden{display:none;}
+.update-card{
+  width:min(520px,96vw);max-height:82vh;overflow:auto;
+  background:linear-gradient(180deg,#211b48,#151331);
+  border:1px solid rgba(167,139,250,.38);border-radius:22px;
+  box-shadow:0 24px 80px rgba(0,0,0,.55);padding:22px;color:var(--text);
+}
+.update-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:16px;}
+.update-kicker{font-size:11px;font-weight:900;color:var(--accent2);letter-spacing:.08em;}
+.update-title{font-size:22px;font-weight:900;margin-top:3px;}
+.update-version{
+  flex:none;background:linear-gradient(135deg,#f59e0b,#fb7185);color:#251006;
+  font-size:12px;font-weight:900;padding:6px 11px;border-radius:999px;
+}
+.update-summary{
+  border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.045);
+  border-radius:14px;padding:13px 14px;margin-bottom:14px;
+}
+.update-summary-title{font-size:13px;font-weight:900;margin-bottom:8px;color:#fff;}
+.update-list{margin:0;padding-left:1.25em;font-size:13px;line-height:1.85;color:var(--text);}
+.update-note{
+  margin-top:13px;padding:11px 12px;border-radius:12px;
+  background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.24);
+  color:var(--text-dim);font-size:12px;line-height:1.65;
+}
+.update-actions{display:flex;gap:9px;margin-top:16px;}
+.update-ok{
+  flex:1;border:none;border-radius:13px;padding:12px 14px;cursor:pointer;
+  font-family:'M PLUS Rounded 1c',sans-serif;font-size:13px;font-weight:900;
+  color:#fff;background:linear-gradient(135deg,#7c3aed,#ec4899);
+}
+.update-close{
+  border:1px solid rgba(255,255,255,.14);border-radius:13px;padding:12px 14px;
+  cursor:pointer;font-family:'M PLUS Rounded 1c',sans-serif;font-size:12px;font-weight:800;
+  color:var(--text);background:rgba(255,255,255,.05);
+}
+.update-history-item{
+  padding:14px 0;border-bottom:1px solid rgba(255,255,255,.09);
+}
+.update-history-item:last-child{border-bottom:none;}
+.update-history-ver{font-size:13px;font-weight:900;color:var(--accent2);margin-bottom:5px;}
+.update-history-date{font-size:10px;color:var(--text-dim);font-weight:700;margin-left:7px;}
+.update-history-item ul{margin:5px 0 0;padding-left:1.25em;font-size:12px;line-height:1.75;color:var(--text-dim);}
+@media(max-width:720px){
+  .test-banner{justify-content:flex-start;}
+  .update-history-btn{padding:5px 8px;}
+}
+
 </style>
 </head>
 <body>
-<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.9</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span></div>
+<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.9.1</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
 
 <div id="starfield"></div>
 <div class="overlay" id="lvOverlay">
@@ -326,6 +386,40 @@ textarea.test-feedback:focus{border-color:var(--accent2);}
   </div>
 </div>
 <div class="toast" id="toast"></div>
+
+<!-- UPDATE NOTICE / HISTORY -->
+<div class="update-modal hidden" id="updateNoticeModal" role="dialog" aria-modal="true" aria-labelledby="updateNoticeTitle">
+  <div class="update-card">
+    <div class="update-head">
+      <div>
+        <div class="update-kicker">🆕 UPDATE</div>
+        <div class="update-title" id="updateNoticeTitle">アップデートのお知らせ</div>
+      </div>
+      <div class="update-version" id="updateNoticeVersion">Ver.9.1</div>
+    </div>
+    <div id="updateNoticeBody"></div>
+    <div class="update-actions">
+      <button class="update-ok" onclick="acknowledgeUpdate()">確認しました</button>
+    </div>
+  </div>
+</div>
+
+<div class="update-modal hidden" id="updateHistoryModal" role="dialog" aria-modal="true" aria-labelledby="updateHistoryTitle">
+  <div class="update-card">
+    <div class="update-head">
+      <div>
+        <div class="update-kicker">📢 CHANGELOG</div>
+        <div class="update-title" id="updateHistoryTitle">更新履歴</div>
+      </div>
+      <div class="update-version">プロラボマスターズ</div>
+    </div>
+    <div id="updateHistoryBody"></div>
+    <div class="update-actions">
+      <button class="update-close" style="flex:1;" onclick="closeUpdateHistory()">閉じる</button>
+    </div>
+  </div>
+</div>
+
 
 <!-- LOGIN PAGE -->
 <div class="page active" id="page-login">
@@ -2303,8 +2397,91 @@ function finishBattle(result){
   if(result==='win')spawnConfetti();
 }
 
+
+// ===== アップデート通知・更新履歴 =====
+// 今後バージョンアップする際は APP_VERSION と UPDATE_HISTORY の先頭を更新する。
+const APP_VERSION = '9.1';
+const UPDATE_NOTICE_STORAGE_KEY = 'plm_last_seen_update_version';
+const UPDATE_HISTORY = [
+  {
+    version:'9.1',
+    date:'2026/09/12',
+    changes:[
+      'アプリ起動時に「アップデートのお知らせ」を表示する機能を追加しました。',
+      '一度確認したバージョンのお知らせは、同じブラウザでは繰り返し表示しないようにしました。',
+      '画面上部に「更新履歴」ボタンを追加し、過去の変更内容をいつでも確認できるようにしました。',
+      'AIチェック完了後も読み込み表示が続く問題を改善し、完了したことが分かりやすい表示にしました。'
+    ]
+  },
+  {
+    version:'9.0',
+    date:'2026/09/11',
+    changes:[
+      'AIチェックが長時間終わらない場合に備え、通信のタイムアウト処理を追加しました。',
+      '外部AIが利用できない場合でも端末内判定へ切り替えて進められるよう調整しました。',
+      'AIチェックの処理中表示まわりの安定性を改善しました。'
+    ]
+  },
+  {
+    version:'8.0',
+    date:'2026/09',
+    changes:[
+      'Googleフォームへのフィードバック送信を改善し、入力した内容がフォームへ自動反映されるようにしました。',
+      'アプリ名称を「プロラボマスターズ」へ変更しました。'
+    ]
+  }
+];
+
+function escUpdateText(v){
+  return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+function currentUpdate(){
+  return UPDATE_HISTORY.find(x=>x.version===APP_VERSION) || UPDATE_HISTORY[0];
+}
+function updateBlockHtml(item, newest=false){
+  const items=(item.changes||[]).map(x=>`<li>${escUpdateText(x)}</li>`).join('');
+  return `<div class="${newest?'update-summary':'update-history-item'}">
+    <div class="${newest?'update-summary-title':'update-history-ver'}">
+      ${newest?'今回の変更内容':`Ver.${escUpdateText(item.version)}`}
+      ${newest?'':`<span class="update-history-date">${escUpdateText(item.date||'')}</span>`}
+    </div>
+    <ul class="update-list">${items}</ul>
+  </div>`;
+}
+function showUpdateNoticeIfNeeded(){
+  try{
+    const seen=localStorage.getItem(UPDATE_NOTICE_STORAGE_KEY);
+    if(seen===APP_VERSION)return;
+  }catch(e){}
+  const modal=document.getElementById('updateNoticeModal');
+  const body=document.getElementById('updateNoticeBody');
+  const ver=document.getElementById('updateNoticeVersion');
+  const item=currentUpdate();
+  if(!modal||!body)return;
+  if(ver)ver.textContent=`Ver.${APP_VERSION}`;
+  body.innerHTML=updateBlockHtml(item,true)+
+    `<div class="update-note">💡 テスト中に気になった点は、アプリ内のフィードバックからお送りください。大きな変更以外は、今後こちらのお知らせで共有していきます。</div>`;
+  modal.classList.remove('hidden');
+}
+function acknowledgeUpdate(){
+  try{localStorage.setItem(UPDATE_NOTICE_STORAGE_KEY,APP_VERSION);}catch(e){}
+  document.getElementById('updateNoticeModal')?.classList.add('hidden');
+}
+function openUpdateHistory(){
+  const body=document.getElementById('updateHistoryBody');
+  const modal=document.getElementById('updateHistoryModal');
+  if(!body||!modal)return;
+  body.innerHTML=UPDATE_HISTORY.map((x,i)=>updateBlockHtml(x,false)).join('');
+  modal.classList.remove('hidden');
+}
+function closeUpdateHistory(){
+  document.getElementById('updateHistoryModal')?.classList.add('hidden');
+}
+
+
 initStars();
 updateTestSchoolUI();
+setTimeout(showUpdateNoticeIfNeeded,180);
 if(cloudEnabled()&&activeSchoolId())initCloud().then(ok=>{if(ok)cloudPull(true)});
 
 // PWA: Service Worker登録
