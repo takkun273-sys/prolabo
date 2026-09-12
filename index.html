@@ -1773,7 +1773,7 @@ async function checkWithAI(){
   btn.disabled=true;
   if(!settings.aiEnabled||!proxyUrl){
     await localCheck(text, lessonName);
-    btn.textContent='🤖 AIに文章をチェックしてもらう';
+    btn.textContent='✅ AIチェック完了！';
     btn.disabled=false;
     return;
   }
@@ -1788,7 +1788,7 @@ async function checkWithAI(){
     await localCheck(text, lessonName);
     showToast('AI中継に接続できないため端末内判定を使いました','var(--gold)');
   }
-  btn.textContent='🤖 もう一度チェック';
+  btn.textContent='✅ AIチェック完了！';
   btn.disabled=false;
 
 }
@@ -1840,6 +1840,12 @@ async function localCheck(text, lessonName=""){
 }
 
 function showAIResult(result){
+  // 結果が表示された時点で、必ずAIチェック中表示を終了する
+  const checkBtn=document.getElementById('checkBtn');
+  if(checkBtn){
+    checkBtn.innerHTML='✅ AIチェック完了！';
+    checkBtn.disabled=false;
+  }
   lastAiResult=result;
   const box=document.getElementById('aiBox');
   box.classList.add('show');
