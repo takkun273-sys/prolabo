@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>プロラボマスターズ - 全校舎テスト版 Ver.9.1</title>
+<title>プロラボマスターズ - 全校舎テスト版 Ver.10.0</title>
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -11,7 +11,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="プロラボマスターズ">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="favicon.png">
 <meta name="mobile-web-app-capable" content="yes">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap');
@@ -361,10 +362,39 @@ textarea.test-feedback:focus{border-color:var(--accent2);}
   .update-history-btn{padding:5px 8px;}
 }
 
+
+/* Ver.10 UI refresh */
+:root{--sky:#55d8ff;--blue:#2788ff;--navy:#16345f;--mint:#72edc4;--yellow:#ffd84d;--pink:#ff78a8;}
+html,body{background:#e9faff!important;color:#17345f!important}
+body{background:radial-gradient(circle at 12% 5%,rgba(255,255,255,.95),transparent 20%),radial-gradient(circle at 88% 8%,rgba(255,239,146,.55),transparent 18%),linear-gradient(180deg,#72dcff 0,#dff9ff 38%,#f7fdff 100%) fixed!important}
+.test-banner{background:linear-gradient(90deg,#ffd84d,#ffb64b,#ff87a8)!important;color:#56370b!important;border:0!important;box-shadow:0 5px 18px rgba(42,94,130,.14)}
+.test-banner span,.test-banner .warning-text{color:#56370b!important}.school-pill,.update-history-btn{background:#fff!important;color:#36537a!important}
+.topbar,.header,.app-header,.student-header{background:rgba(255,255,255,.94)!important;color:#17345f!important;border-bottom:1px solid #d9eff8!important;box-shadow:0 8px 28px rgba(31,112,165,.10)!important;backdrop-filter:blur(12px)}
+.topbar button,.header button,.app-header button,.student-header button{color:#17345f!important;background:#fff!important;border-color:#d9eff8!important}
+.card,.panel,.section,.stat-card,.monster-card,.feedback-card,.battle-card,.login-card,.admin-card,.history-card,.book-card{background:rgba(255,255,255,.95)!important;color:#17345f!important;border:1px solid rgba(39,136,255,.13)!important;border-radius:24px!important;box-shadow:0 12px 35px rgba(37,115,161,.12)!important}
+input,select,textarea{background:#fff!important;color:#17345f!important;border:2px solid #d8eff8!important;border-radius:15px!important}
+input:focus,select:focus,textarea:focus{border-color:#55bfff!important;box-shadow:0 0 0 4px rgba(85,191,255,.15)!important}
+button,.btn{border-radius:15px!important;font-weight:900!important;transition:.14s ease!important}button:hover,.btn:hover{transform:translateY(-1px)}
+.btn-primary,.primary-btn,.action-primary{background:linear-gradient(135deg,#36bfff,#3b82f6)!important;color:#fff!important;border:none!important;box-shadow:0 8px 20px rgba(49,141,235,.25)!important}
+.btn-success,.success-btn{background:linear-gradient(135deg,#52dfb0,#28c997)!important;color:#073d35!important;border:none!important}
+.btn-danger,.danger-btn{background:linear-gradient(135deg,#ff8bad,#ff668c)!important;color:#fff!important;border:none!important}
+h1,h2,h3,.title,.section-title{color:#16345f!important;text-shadow:none!important}.muted,.sub,.hint,.text-dim{color:#6885a3!important}
+.progress,.exp-bar,.bar-bg{background:#dff1f8!important;border-radius:999px!important;overflow:hidden!important}.progress-fill,.exp-fill,.bar-fill{background:linear-gradient(90deg,#52dfb0,#48c7ff,#7b8cff)!important;border-radius:999px!important}
+.modal-content,.modal-card,.dialog,.update-card{background:linear-gradient(180deg,#fff,#f3fbff)!important;color:#17345f!important;border:1px solid #cfeefa!important;border-radius:26px!important;box-shadow:0 25px 90px rgba(28,91,137,.28)!important}
+.update-title,.update-summary-title,.update-history-ver{color:#16345f!important}.update-summary,.update-history-item{background:#fff!important;border-color:#dceff7!important}.update-list,.update-note,.update-history-item ul{color:#577593!important}.update-note{background:#eafff7!important;border-color:#bcefdc!important}
+#studentScreen,#studentView,.student-screen,.student-view,.screen-student{background:transparent!important;color:#17345f!important}
+.monster-img,.monster-image,.monster-visual img{filter:drop-shadow(0 15px 20px rgba(39,136,255,.20))}
+.stat-row,.stat-item{background:#f5fbff!important;border-color:#dceff7!important;color:#17345f!important}
+nav,.bottom-nav,.game-nav{background:rgba(255,255,255,.94)!important;border-color:#d8edf7!important;box-shadow:0 -8px 28px rgba(31,112,165,.10)!important}
+nav button,.bottom-nav button,.game-nav button{color:#547392!important}nav button.active,.bottom-nav button.active,.game-nav button.active{color:#258be8!important;background:#eaf8ff!important}
+button[onclick*="reflect" i],button[onclick*="lesson" i],button[onclick*="exp" i],#giveExpBtn,#reflectionBtn{background:linear-gradient(135deg,#ff76a7,#a678f4)!important;color:#fff!important;border:none!important;box-shadow:0 10px 25px rgba(213,98,177,.24)!important}
+.battle-area,.battle-screen,.battle-panel{background:linear-gradient(180deg,#eaf9ff,#fff7fb)!important;color:#17345f!important}.hp-bar{background:#dceff2!important}.hp-fill{background:linear-gradient(90deg,#57dda8,#a5e65a)!important}
+@media(max-width:720px){button,.btn{min-height:44px}.card,.panel,.section,.monster-card{border-radius:20px!important}}
+
 </style>
 </head>
 <body>
-<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.9.1</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
+<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.10.0</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
 
 <div id="starfield"></div>
 <div class="overlay" id="lvOverlay">
@@ -2400,9 +2430,23 @@ function finishBattle(result){
 
 // ===== アップデート通知・更新履歴 =====
 // 今後バージョンアップする際は APP_VERSION と UPDATE_HISTORY の先頭を更新する。
-const APP_VERSION = '9.1';
+const APP_VERSION = '10.0';
 const UPDATE_NOTICE_STORAGE_KEY = 'plm_last_seen_update_version';
 const UPDATE_HISTORY = [
+  {version:'10.0',date:'2026/09/20',changes:[
+    '新しいアイコンに合わせ、アプリ全体のUIを明るく親しみやすいデザインへ一新しました。',
+    '水色・白を中心に、黄色・ピンク・ミントをアクセントとした育成ゲームらしい世界観に統一しました。',
+    'カード・ボタン・入力欄・ステータス表示などを、丸みがあり直感的に操作しやすいデザインへ変更しました。',
+    '既存の児童データ・モンスター・EXP・個体値・図鑑・履歴・バトル履歴の保存仕様は変更していません。'
+  ]},
+  {
+    version:'9.2',
+    date:'2026/09/19',
+    changes:[
+      'プロラボマスターズのアプリアイコンを、たまごから飛び出すモンスターの新しいデザインへ変更しました。',
+      'ブラウザのタブやホーム画面でも新しいアイコンを使用できるよう対応しました。'
+    ]
+  },
   {
     version:'9.1',
     date:'2026/09/12',

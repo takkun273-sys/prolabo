@@ -1,25 +1,20 @@
 {
-  "name": "マイモンスター育成 - プロラボ加古川校",
-  "short_name": "モンスター育成",
-  "description": "アウトプットでモンスターを育てよう！放課後等デイサービス プロラボ加古川校",
-  "start_url": "./index.html",
+  "name": "プロラボマスターズ",
+  "short_name": "プロラボマスターズ",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#0D1B2A",
-  "theme_color": "#D4A017",
-  "orientation": "portrait-primary",
-  "lang": "ja",
+  "background_color": "#e9faff",
+  "theme_color": "#55d8ff",
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
