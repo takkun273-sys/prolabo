@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>プロラボマスターズ - 全校舎テスト版 Ver.10.3</title>
+<title>プロラボマスターズ - 全校舎テスト版 Ver.10.4</title>
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -396,7 +396,7 @@ button[onclick*="reflect" i],button[onclick*="lesson" i],button[onclick*="exp" i
   min-height:100vh!important;
   background:
     linear-gradient(180deg,rgba(255,255,255,.02),rgba(231,250,255,.08)),
-    url('./login-game-world.png?v=10.3') center top/cover no-repeat fixed!important;
+    url('./login-adventure-bg.png?v=10.4') center top/cover no-repeat fixed!important;
   position:relative!important;
 }
 #page-login:before{
@@ -406,7 +406,7 @@ button[onclick*="reflect" i],button[onclick*="lesson" i],button[onclick*="exp" i
 #page-login .login-wrap{
   width:min(520px,calc(100% - 28px))!important;
   margin:0 auto!important;
-  padding-top:52vh!important;
+  padding-top:18vh!important;
   padding-bottom:70px!important;
   position:relative!important;z-index:2!important;
 }
@@ -453,7 +453,7 @@ button[onclick*="reflect" i],button[onclick*="lesson" i],button[onclick*="exp" i
     background-repeat:no-repeat!important;
     background-color:#e9faff!important;
   }
-  #page-login .login-wrap{padding-top:430px!important;width:min(94%,520px)!important}
+  #page-login .login-wrap{padding-top:170px!important;width:min(94%,520px)!important}
 }
 @media(max-width:430px){
   #page-login{background-size:auto 430px!important}
@@ -461,10 +461,19 @@ button[onclick*="reflect" i],button[onclick*="lesson" i],button[onclick*="exp" i
   #page-login .school-card,#page-login .login-card{border-radius:22px!important}
 }
 
+
+/* Ver.10.4: artwork-only adventure background */
+#page-login .login-wrap:before{
+ content:"プロラボマスターズ";display:block;text-align:center;margin:0 auto 14px;
+ font-size:clamp(28px,4vw,44px);font-weight:1000;color:#fff;
+ text-shadow:0 3px 0 #2878c7,0 7px 18px rgba(13,70,125,.35);
+ letter-spacing:.04em;
+}
+#page-login .school-card,#page-login .login-card{background:rgba(255,255,255,.94)!important}
 </style>
 <link rel="icon" type="image/png" href="./favicon.png?v=10.1"><link rel="shortcut icon" href="./favicon.png?v=10.1"><link rel="apple-touch-icon" href="./apple-touch-icon.png?v=10.1"></head>
 <body>
-<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.10.3</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
+<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.10.4</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
 
 <div id="starfield"></div>
 <div class="overlay" id="lvOverlay">
@@ -2500,9 +2509,14 @@ function finishBattle(result){
 
 // ===== アップデート通知・更新履歴 =====
 // 今後バージョンアップする際は APP_VERSION と UPDATE_HISTORY の先頭を更新する。
-const APP_VERSION = '10.3';
+const APP_VERSION = '10.4';
 const UPDATE_NOTICE_STORAGE_KEY = 'plm_last_seen_update_version';
 const UPDATE_HISTORY = [
+{version:'10.4',date:'2026/09/20',changes:[
+    'トップページ背景を、文字・バージョン表記・入力画面を一切含まない冒険世界のイラストへ変更しました。',
+    '背景にはキャラクター・草原・川・橋・城などの世界観だけを配置し、校舎選択やログイン欄は実際のアプリUIのみ表示します。',
+    '背景画像と操作UIが二重に見える問題を解消しました。'
+    ]},
 {version:'10.3',date:'2026/09/20',changes:[
  'トップページをプロラボマスターズのゲーム世界を感じられるビジュアルへ刷新しました。',
  '城・草原・モンスターの世界観を背景にし、ログイン操作は実際に使えるカードとして重ねています。',
