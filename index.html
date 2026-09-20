@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>プロラボマスターズ - 全校舎テスト版 Ver.12.2</title>
+<title>プロラボマスターズ - 全校舎テスト版 Ver.12.3</title>
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -762,10 +762,14 @@ button[onclick*="reflect" i],button[onclick*="lesson" i],button[onclick*="exp" i
 .game-window-overlay{display:none;position:fixed;inset:0;z-index:5100;background:rgba(19,65,100,.72);backdrop-filter:blur(10px);padding:18px;overflow:auto}.game-window-overlay.show{display:flex;align-items:center;justify-content:center}.game-window-shell{width:min(940px,96vw);max-height:92dvh;overflow:auto;background:linear-gradient(180deg,#f7fdff,#fff);border:4px solid #fff;border-radius:30px;box-shadow:0 30px 80px rgba(8,46,75,.36);padding:22px;position:relative}.game-window-close{position:sticky;float:right;top:0;z-index:2;width:42px;height:42px;border:0;border-radius:50%;background:#eaf6fb;color:#315b80;font-size:18px;font-weight:1000}
 #historyGameMount .card{box-shadow:none!important;border:0!important;background:transparent!important;margin:0!important}
 @media(min-width:801px) and (max-height:720px){#page-child.active .topbar{height:56px!important;min-height:56px!important}#page-child.active .game-hud{height:calc(100dvh - 56px)!important;grid-template-rows:minmax(0,1fr) 78px!important;padding:8px 14px!important;gap:8px!important}#page-child.active .hud-monster-orbit img{width:min(27vh,205px)!important;height:min(27vh,205px)!important}#page-child.active .hud-stat{padding:5px 8px!important;margin:4px 0!important}#page-child.active .hud-actions{height:78px!important}}
-@media(max-width:800px){#page-child.active .topbar{height:56px!important;min-height:56px!important}#page-child.active .game-hud{height:calc(100dvh - 56px)!important;margin:0!important;padding:7px!important;display:grid!important;grid-template-columns:1fr .82fr!important;grid-template-rows:minmax(0,1fr) 84px!important;grid-template-areas:"stage stats" "actions actions"!important;gap:6px!important}#page-child.active .hud-stage,#page-child.active .hud-stats{margin:0!important;border-radius:20px!important}#page-child.active .hud-stage{padding:8px!important}#page-child.active .hud-name{font-size:18px!important}#page-child.active .hud-monster-orbit img{width:min(24vh,145px)!important;height:min(24vh,145px)!important}#page-child.active .hud-exp-box{padding:6px 7px!important;font-size:9px!important}#page-child.active .hud-stats{padding:8px!important}#page-child.active .hud-stat{grid-template-columns:58px 1fr 23px!important;gap:3px!important;padding:5px!important;margin:4px 0!important;font-size:9px!important}#page-child.active .hud-actions{height:84px!important;margin:0!important;padding:6px!important;display:grid!important;grid-template-columns:1.08fr 1fr!important;gap:5px!important}#page-child.active .hud-main-quest{font-size:12px!important;padding:5px!important;margin:0!important}#page-child.active .hud-sub-actions{min-height:0!important;gap:3px!important}.hud-sub-actions button{font-size:15px!important}.hud-sub-actions span{font-size:7px!important}}</style>
+@media(max-width:800px){#page-child.active .topbar{height:56px!important;min-height:56px!important}#page-child.active .game-hud{height:calc(100dvh - 56px)!important;margin:0!important;padding:7px!important;display:grid!important;grid-template-columns:1fr .82fr!important;grid-template-rows:minmax(0,1fr) 84px!important;grid-template-areas:"stage stats" "actions actions"!important;gap:6px!important}#page-child.active .hud-stage,#page-child.active .hud-stats{margin:0!important;border-radius:20px!important}#page-child.active .hud-stage{padding:8px!important}#page-child.active .hud-name{font-size:18px!important}#page-child.active .hud-monster-orbit img{width:min(24vh,145px)!important;height:min(24vh,145px)!important}#page-child.active .hud-exp-box{padding:6px 7px!important;font-size:9px!important}#page-child.active .hud-stats{padding:8px!important}#page-child.active .hud-stat{grid-template-columns:58px 1fr 23px!important;gap:3px!important;padding:5px!important;margin:4px 0!important;font-size:9px!important}#page-child.active .hud-actions{height:84px!important;margin:0!important;padding:6px!important;display:grid!important;grid-template-columns:1.08fr 1fr!important;gap:5px!important}#page-child.active .hud-main-quest{font-size:12px!important;padding:5px!important;margin:0!important}#page-child.active .hud-sub-actions{min-height:0!important;gap:3px!important}.hud-sub-actions button{font-size:15px!important}.hud-sub-actions span{font-size:7px!important}}
+/* Ver.12.3 bugfix: HUD monster + stat bars */
+#hudMonsterImg{display:block!important;opacity:1!important;visibility:visible!important}
+#page-child.active .hud-stat-track i{width:0}
+</style>
 <link rel="icon" type="image/png" href="./favicon.png?v=10.1"><link rel="shortcut icon" href="./favicon.png?v=10.1"><link rel="apple-touch-icon" href="./apple-touch-icon.png?v=10.1"></head>
 <body>
-<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.12.2</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
+<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.12.3</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
 
 <div id="starfield"></div>
 <div class="overlay" id="lvOverlay">
@@ -2817,7 +2821,7 @@ function finishBattle(result){
 
 // ===== アップデート通知・更新履歴 =====
 // 今後バージョンアップする際は APP_VERSION と UPDATE_HISTORY の先頭を更新する。
-const APP_VERSION = '12.2';
+const APP_VERSION = '12.3';
 const UPDATE_NOTICE_STORAGE_KEY = 'plm_last_seen_update_version';
 const UPDATE_HISTORY = [
 {version:'12.0R',date:'2026/09/20',changes:[
@@ -3024,5 +3028,49 @@ function syncGameHud(){try{
 function openQuestPanel(){document.getElementById('questOverlay').classList.add('show');document.body.style.overflow='hidden'}
 function closeQuestPanel(){document.getElementById('questOverlay').classList.remove('show');document.body.style.overflow=''}
 function openGrowthHistory(){const h=document.getElementById('histCard');if(h){h.style.display='block';document.getElementById('childWrap').style.display='block';h.scrollIntoView({behavior:'smooth'})}}
-setInterval(setupGameHud,600);</script><div id="historyGameOverlay" class="game-window-overlay" onclick="if(event.target===this)closeHistoryGame()"><div class="game-window-shell"><button class="game-window-close" onclick="closeHistoryGame()">✕</button><div id="historyGameMount"></div></div></div><script>function openGrowthHistory(){const h=document.getElementById('histCard'),m=document.getElementById('historyGameMount'),o=document.getElementById('historyGameOverlay');if(h&&m&&o){h.style.display='block';m.appendChild(h);o.classList.add('show');document.body.style.overflow='hidden';}}function closeHistoryGame(){const o=document.getElementById('historyGameOverlay');if(o)o.classList.remove('show');document.body.style.overflow='';}</script></body>
+setInterval(setupGameHud,600);</script><div id="historyGameOverlay" class="game-window-overlay" onclick="if(event.target===this)closeHistoryGame()"><div class="game-window-shell"><button class="game-window-close" onclick="closeHistoryGame()">✕</button><div id="historyGameMount"></div></div></div><script>function openGrowthHistory(){const h=document.getElementById('histCard'),m=document.getElementById('historyGameMount'),o=document.getElementById('historyGameOverlay');if(h&&m&&o){h.style.display='block';m.appendChild(h);o.classList.add('show');document.body.style.overflow='hidden';}}function closeHistoryGame(){const o=document.getElementById('historyGameOverlay');if(o)o.classList.remove('show');document.body.style.overflow='';}</script><script>
+/* ===== Ver.12.3 HUD SYNC FIX ===== */
+function syncGameHudV123(){
+ try{
+   const s=(typeof currentUser!=='undefined'&&currentUser&&typeof getStudent==='function')?getStudent(currentUser.id):null;
+   if(!s)return;
+
+   // Monster: do not depend on hidden source DOM timing. Resolve directly from student stage/type.
+   const stage=s.stage||0, iv=s.iv||{hp:0,atk:0,def:0,spd:0};
+   const type=typeof getIvType==='function'?getIvType(iv):'hp';
+   const stageKey=['egg','young','grown','final'][Math.min(stage,3)];
+   const imgSrc=(typeof SHISHIN_STAGE_IMG!=='undefined'&&SHISHIN_STAGE_IMG[`${stageKey}_${type}`]) ||
+                (typeof PROLABO_MASCOT_IMAGE!=='undefined'?PROLABO_MASCOT_IMAGE:'');
+   const dst=document.getElementById('hudMonsterImg');
+   if(dst&&imgSrc){dst.src=imgSrc;dst.style.display='block';}
+
+   const stages=typeof STAGES!=='undefined'?STAGES:[];
+   const st=stages[stage]||{name:'たまご',minExp:0};
+   const next=stages[Math.min(stage+1,stages.length-1)]||st;
+   const exp=s.exp||0;
+   const name=document.getElementById('hudMonsterName');
+   if(name)name.textContent=s.monsterName||'???';
+   const sn=document.getElementById('hudStageName'); if(sn)sn.textContent=st.name;
+   const lv=document.getElementById('hudLevel'); if(lv)lv.textContent=`Lv.${stage+1} ${st.name}`;
+   const et=document.getElementById('hudExpText');
+   if(et)et.textContent=stage>=stages.length-1?`${exp} (MAX!)`:`${exp} / ${next.minExp}`;
+   const ep=document.getElementById('hudExpFill');
+   if(ep){const p=stage>=stages.length-1?100:Math.max(0,Math.min(100,((exp-st.minExp)/(next.minExp-st.minExp))*100));ep.style.width=p+'%';}
+
+   // Stats: 0..31 should visually be 0..100%, not full bars at zero.
+   [['hp','hudHp','hudHpBar'],['atk','hudAtk','hudAtkBar'],['def','hudDef','hudDefBar'],['spd','hudSpd','hudSpdBar']].forEach(([k,n,b])=>{
+     const v=Math.max(0,Math.min(31,Number(iv[k])||0));
+     const ne=document.getElementById(n),be=document.getElementById(b);
+     if(ne)ne.textContent=v;
+     if(be)be.style.width=(v/31*100)+'%';
+   });
+
+   const evo=document.getElementById('hudEvolutionSteps');
+   if(evo&&stages.length)evo.innerHTML=stages.map((x,i)=>`<div class="hud-evo-step ${i<stage?'done':''} ${i===stage?'current':''}">${x.icon||''} ${x.name}</div>`).join('');
+   const nextText=document.getElementById('hudNextEvolution');
+   if(nextText)nextText.textContent=stage>=stages.length-1?'最高進化！':`あと${Math.max(0,next.minExp-exp)} EXPで次の進化！`;
+ }catch(e){console.warn('HUD sync',e);}
+}
+setInterval(syncGameHudV123,300);
+</script></body>
 </html>
