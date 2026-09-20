@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>プロラボマスターズ - 全校舎テスト版 Ver.13.0</title>
+<title>プロラボマスターズ - 全校舎テスト版 Ver.13.1</title>
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -769,10 +769,18 @@ button[onclick*="reflect" i],button[onclick*="lesson" i],button[onclick*="exp" i
 
 #hudMonsterImg,#monster-img{border-radius:0!important;background:transparent!important;object-fit:contain!important}
 #hudMonsterImg{filter:drop-shadow(0 18px 15px rgba(31,112,167,.23))!important}
+
+/* Ver.13.1 monster presentation */
+#hudMonsterImg,#monster-img{transition:none!important;animation:none!important;background:transparent!important;border-radius:0!important}
+.hud-monster-orbit{isolation:isolate}
+.hud-monster-orbit:before{content:"";position:absolute;width:72%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.82),rgba(195,239,255,.35) 48%,transparent 70%);z-index:-1}
 </style>
-<link rel="icon" type="image/png" href="./favicon.png?v=10.1"><link rel="shortcut icon" href="./favicon.png?v=10.1"><link rel="apple-touch-icon" href="./apple-touch-icon.png?v=10.1"></head>
+<link rel="icon" type="image/png" href="./favicon.png?v=10.1"><link rel="shortcut icon" href="./favicon.png?v=10.1"><link rel="apple-touch-icon" href="./apple-touch-icon.png?v=10.1">
+<link rel="preload" as="image" href="./monsters/egg.png">
+<link rel="preload" as="image" href="./monsters/young.png">
+</head>
 <body>
-<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.13.0</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
+<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.13.1</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
 
 <div id="starfield"></div>
 <div class="overlay" id="lvOverlay">
@@ -2824,7 +2832,7 @@ function finishBattle(result){
 
 // ===== アップデート通知・更新履歴 =====
 // 今後バージョンアップする際は APP_VERSION と UPDATE_HISTORY の先頭を更新する。
-const APP_VERSION = '13.0';
+const APP_VERSION = '13.1';
 const UPDATE_NOTICE_STORAGE_KEY = 'plm_last_seen_update_version';
 const UPDATE_HISTORY = [
 {version:'12.0R',date:'2026/09/20',changes:[
@@ -3074,7 +3082,7 @@ function syncGameHudV123(){
    if(nextText)nextText.textContent=stage>=stages.length-1?'最高進化！':`あと${Math.max(0,next.minExp-exp)} EXPで次の進化！`;
  }catch(e){console.warn('HUD sync',e);}
 }
-setInterval(syncGameHudV123,300);
+
 </script><script>
 /* ===== Ver.13 NEW MONSTER ART SYSTEM ===== */
 const PROLABO_MONSTER_ASSETS = {
@@ -3101,6 +3109,46 @@ function applyNewMonsterArt(){
   ['monster-img','hudMonsterImg'].forEach(id=>{const el=document.getElementById(id);if(el&&el.getAttribute('src')!==asset)el.src=asset;});
  }catch(e){}
 }
-setInterval(applyNewMonsterArt,250);
+
+</script><script>
+/* ===== Ver.13.1 SINGLE MONSTER RENDERER ===== */
+let __plmMonsterRenderKey='';
+function renderProlaboMonsterOnce(){
+ try{
+  const s=(typeof currentUser!=='undefined'&&currentUser&&typeof getStudent==='function')?getStudent(currentUser.id):null;
+  if(!s)return;
+  const iv=s.iv||{hp:0,atk:0,def:0,spd:0};
+  const type=typeof getIvType==='function'?getIvType(iv):'hp';
+  const stage=s.stage||0;
+  const asset=typeof getProlaboMonsterAsset==='function'?getProlaboMonsterAsset(stage,type):'';
+  const key=[s.id,stage,type,s.exp||0,iv.hp||0,iv.atk||0,iv.def||0,iv.spd||0,asset].join('|');
+  if(key===__plmMonsterRenderKey)return;
+  __plmMonsterRenderKey=key;
+
+  ['monster-img','hudMonsterImg'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&asset&&el.getAttribute('src')!==asset)el.setAttribute('src',asset);
+  });
+
+  // HUD values are written in the same render pass, eliminating races.
+  const stages=typeof STAGES!=='undefined'?STAGES:[];
+  const st=stages[stage]||{name:'たまご',minExp:0};
+  const next=stages[Math.min(stage+1,stages.length-1)]||st;
+  const exp=s.exp||0;
+  const name=document.getElementById('hudMonsterName'); if(name)name.textContent=s.monsterName||'???';
+  const sn=document.getElementById('hudStageName'); if(sn)sn.textContent=st.name;
+  const lv=document.getElementById('hudLevel'); if(lv)lv.textContent=`Lv.${stage+1} ${st.name}`;
+  const et=document.getElementById('hudExpText'); if(et)et.textContent=stage>=stages.length-1?`${exp} (MAX!)`:`${exp} / ${next.minExp}`;
+  const ep=document.getElementById('hudExpFill'); if(ep){const p=stage>=stages.length-1?100:Math.max(0,Math.min(100,((exp-st.minExp)/(next.minExp-st.minExp))*100));ep.style.width=p+'%';}
+  [['hp','hudHp','hudHpBar'],['atk','hudAtk','hudAtkBar'],['def','hudDef','hudDefBar'],['spd','hudSpd','hudSpdBar']].forEach(([k,n,b])=>{
+    const v=Math.max(0,Math.min(31,Number(iv[k])||0)); const ne=document.getElementById(n),be=document.getElementById(b);
+    if(ne)ne.textContent=v;if(be)be.style.width=(v/31*100)+'%';
+  });
+  const evo=document.getElementById('hudEvolutionSteps');
+  if(evo&&stages.length)evo.innerHTML=stages.map((x,i)=>`<div class="hud-evo-step ${i<stage?'done':''} ${i===stage?'current':''}">${x.icon||''} ${x.name}</div>`).join('');
+  const nt=document.getElementById('hudNextEvolution'); if(nt)nt.textContent=stage>=stages.length-1?'最高進化！':`あと${Math.max(0,next.minExp-exp)} EXPで次の進化！`;
+ }catch(e){console.warn('monster render',e);}
+}
+setInterval(renderProlaboMonsterOnce,500);
 </script></body>
 </html>
