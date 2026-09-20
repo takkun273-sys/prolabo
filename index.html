@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>プロラボマスターズ - 全校舎テスト版 Ver.14.0</title>
+<title>プロラボマスターズ - 全校舎テスト版 Ver.14.1</title>
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -799,13 +799,13 @@ body:has(#page-child.active) .test-banner{position:fixed!important;top:0!importa
 #page-child.active #childWrap{display:none!important}
 @media(max-height:760px) and (min-width:801px){.v14-dashboard{grid-template-rows:54px minmax(0,1fr) 142px}.v14-main{padding-top:9px}.v14-orbit{width:min(42vh,340px);height:min(42vh,340px)}.v14-actions{grid-template-rows:60px 70px}.v14-panel{padding:14px}.v14-stat{margin:7px 0}.v14-news{display:none}.v14-mon-name{font-size:24px}.v14-lv{margin:8px 0}}
 @media(max-width:800px){.v14-dashboard{grid-template-rows:50px minmax(0,1fr) 126px}.v14-head{grid-template-columns:1fr auto;padding:4px 8px}.v14-brand small,.v14-test{display:none}.v14-brand img{width:38px;height:38px}.v14-main{grid-template-columns:34% 1fr;padding:7px;gap:6px}.v14-left{grid-column:1}.v14-center{grid-column:2}.v14-right{position:absolute;right:6px;top:58px;width:31%;height:43%;z-index:3}.v14-news{display:none}.v14-panel{padding:7px;border-width:2px;border-radius:14px}.wood-title{font-size:10px;padding:4px 8px}.v14-mon-name{font-size:16px}.v14-type{font-size:8px;padding:4px}.v14-lv{font-size:15px;margin:5px 0}.v14-exp-label,.v14-next{font-size:7px}.v14-stat{grid-template-columns:42px 1fr 18px;gap:2px;font-size:7px;margin:4px 0}.v14-stat em{display:none}.v14-evo-title{font-size:8px;margin:5px 0;padding-top:4px}.v14-evo .hud-evo-step{font-size:5px;padding:3px 0}.v14-orbit{width:min(43vh,250px);height:min(43vh,250px)}.v14-speech{display:none}.v14-actions{padding:4px;grid-template-rows:54px 62px;gap:3px}.v14-actions button{border-width:2px;border-radius:12px;font-size:16px;gap:4px}.v14-actions span{font-size:9px}.v14-actions small{font-size:5px}}
-</style>
+#page-child.active #gameHud.v14-dashboard{display:grid!important}</style>
 <link rel="icon" type="image/png" href="./favicon.png?v=10.1"><link rel="shortcut icon" href="./favicon.png?v=10.1"><link rel="apple-touch-icon" href="./apple-touch-icon.png?v=10.1">
 
 
 </head>
 <body>
-<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.14.0</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
+<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.14.1</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
 
 <div id="starfield"></div>
 <div class="overlay" id="lvOverlay">
@@ -991,7 +991,7 @@ body:has(#page-child.active) .test-banner{position:fixed!important;top:0!importa
   <div id="gameHud" class="v14-dashboard" style="display:none">
 <header class="v14-head">
   <div class="v14-brand"><img src="./icon-192.png" alt=""><div><b>プロラボ<br>マスターズ</b><small>学びで、きみの未来をもっとおもしろく！</small></div></div>
-  <div class="v14-test">🧪 全校舎テスト版 <b>Ver.14.0</b>　<span id="v14School">加古川校</span>　実在する児童の氏名・個人情報は入力しないでください</div>
+  <div class="v14-test">🧪 全校舎テスト版 <b>Ver.14.1</b>　<span id="v14School">加古川校</span>　実在する児童の氏名・個人情報は入力しないでください</div>
   <div class="v14-head-actions"><button onclick="openUpdateHistory()">📢 更新履歴</button><button onclick="logoutChild()">← でる</button></div>
 </header>
 <main class="v14-main">
@@ -2886,7 +2886,7 @@ function finishBattle(result){
 
 // ===== アップデート通知・更新履歴 =====
 // 今後バージョンアップする際は APP_VERSION と UPDATE_HISTORY の先頭を更新する。
-const APP_VERSION = '14.0';
+const APP_VERSION = '14.1';
 const UPDATE_NOTICE_STORAGE_KEY = 'plm_last_seen_update_version';
 const UPDATE_HISTORY = [
 {version:'12.0R',date:'2026/09/20',changes:[
@@ -3074,10 +3074,14 @@ window.addEventListener('unhandledrejection', (event)=>{
 </script>
 <script>function setupGameHud(){
  const wrap=document.getElementById('childWrap'),hud=document.getElementById('gameHud'),mount=document.getElementById('questMount');
- if(!wrap||!hud)return;
- if(getComputedStyle(wrap).display!=='none'){hud.style.display='grid';
+ const page=document.getElementById('page-child');
+ if(!wrap||!hud||!page)return;
+ const loggedIn=page.classList.contains('active') || (typeof currentUser!=='undefined' && !!currentUser);
+ if(loggedIn){
+  hud.style.display='grid';
   const cards=[...wrap.children].filter(x=>x.classList&&x.classList.contains('card'));
-  const q=cards.find(c=>c.querySelector('#freeText')||c.querySelector('#lessonNameInput'));if(q&&mount&&!mount.contains(q))mount.appendChild(q);
+  const q=cards.find(c=>c.querySelector('#freeText')||c.querySelector('#lessonNameInput'));
+  if(q&&mount&&!mount.contains(q))mount.appendChild(q);
   syncGameHud();
  }else hud.style.display='none';
 }
