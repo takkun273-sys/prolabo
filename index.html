@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>プロラボマスターズ - 全校舎テスト版 Ver.13.3</title>
+<title>プロラボマスターズ - 全校舎テスト版 Ver.14.0</title>
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -784,13 +784,28 @@ button[onclick*="reflect" i],button[onclick*="lesson" i],button[onclick*="exp" i
 #page-child.active #hudMonsterImg{width:min(31vh,245px)!important;height:min(31vh,245px)!important;object-fit:contain!important}
 body:has(#page-child.active) .test-banner{position:fixed!important;top:0!important;left:50%!important;transform:translateX(-50%)!important;z-index:10000!important;width:auto!important;max-width:72vw!important;min-height:28px!important;height:28px!important;padding:2px 11px!important;border-radius:0 0 12px 12px!important;font-size:9px!important;line-height:24px!important;overflow:hidden!important;white-space:nowrap!important;box-shadow:0 3px 9px rgba(0,0,0,.10)!important}
 @media(max-width:800px){#page-child.active .topbar{height:46px!important;min-height:46px!important;padding:3px 7px!important}#page-child.active .game-hud{height:calc(100dvh - 46px)!important}body:has(#page-child.active) .test-banner{max-width:90vw!important;font-size:7px!important}}
-#hudMonsterImg,#monster-img{width:min(34vh,285px)!important;height:min(34vh,285px)!important;max-width:94%!important;max-height:94%!important;object-fit:contain!important;object-position:center!important;overflow:visible!important;border-radius:0!important;background:transparent!important;transition:none!important;animation:none!important}.hud-monster-orbit{overflow:visible!important;padding:8px!important}</style>
+#hudMonsterImg,#monster-img{width:min(34vh,285px)!important;height:min(34vh,285px)!important;max-width:94%!important;max-height:94%!important;object-fit:contain!important;object-position:center!important;overflow:visible!important;border-radius:0!important;background:transparent!important;transition:none!important;animation:none!important}.hud-monster-orbit{overflow:visible!important;padding:8px!important}
+/* ===== VER.14 FULL GAME DASHBOARD ===== */
+#page-child.active{height:100dvh!important;min-height:100dvh!important;overflow:hidden!important;padding:0!important;background:url('./adventure-home-bg.png?v=14') center/cover no-repeat!important}
+#page-child.active>.topbar{display:none!important}
+.v14-dashboard{height:100dvh;max-width:1536px;margin:auto;display:grid;grid-template-rows:64px minmax(0,1fr) 176px;overflow:hidden;color:#123c6a;font-weight:800}
+.v14-head{display:grid;grid-template-columns:330px 1fr auto;align-items:center;gap:12px;padding:6px 24px;background:linear-gradient(90deg,rgba(39,177,241,.96),rgba(33,153,232,.96));box-shadow:0 4px 18px #2177a64d;z-index:4}
+.v14-brand{display:flex;align-items:center;gap:8px;color:#fff}.v14-brand img{width:48px;height:48px;border-radius:12px}.v14-brand b{font-size:16px;line-height:.9;text-shadow:0 2px 2px #12649a}.v14-brand small{display:block;font-size:9px;margin-top:4px}.v14-test{justify-self:center;background:linear-gradient(90deg,#ffd851,#ff8fae);padding:8px 14px;border-radius:18px;color:#4e3a13;font-size:10px;white-space:nowrap}.v14-head-actions{display:flex;gap:7px}.v14-head-actions button{border:0;background:#fff;color:#28547d;border-radius:16px;padding:9px 12px;font-weight:900}
+.v14-main{display:grid;grid-template-columns:28% 40% 32%;gap:15px;padding:16px 34px 8px;min-height:0}
+.v14-left,.v14-right{display:flex;flex-direction:column;gap:14px;min-height:0}.v14-panel{background:rgba(250,254,255,.92);border:4px solid rgba(255,255,255,.94);border-radius:24px;box-shadow:0 8px 20px #236e9e35;padding:20px}.wood-title{display:inline-block;background:linear-gradient(#f8d48b,#eab86a);border:2px solid #c98d43;border-radius:9px;padding:8px 28px;color:#3d2b14;font-size:17px;box-shadow:inset 0 2px #ffe5ac;margin:-10px 0 12px}.v14-profile{flex:1}.v14-mon-name{font-size:30px;color:#173f6c;margin:4px 0 8px}.v14-type{display:inline-block;background:#d9f1ff;border-radius:999px;padding:8px 14px;font-size:14px}.v14-lv{font-size:27px;margin:15px 0 8px}.v14-exp-label{display:flex;justify-content:space-between}.v14-exp{height:17px;background:#dbe8ef;border-radius:999px;overflow:hidden;margin:6px 0}.v14-exp i{display:block;height:100%;width:0;background:linear-gradient(90deg,#55d3ff,#5b9cff);border-radius:999px}.v14-next{text-align:center;background:#dff4ff;border-radius:10px;padding:9px;font-size:12px}.v14-news{padding:13px 18px;flex:.55}.v14-news h3{margin:0 0 7px}.v14-news p{margin:6px 0;padding-bottom:5px;border-bottom:1px solid #d6e9f4;font-size:11px}
+.v14-center{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0}.v14-orbit{width:min(48vh,430px);height:min(48vh,430px);border-radius:50%;background:radial-gradient(circle,#ffffffc9 0 42%,#bfeeff8c 55%,#ffffff38 68%,transparent 70%);border:4px solid #ffffffaa;display:flex;align-items:center;justify-content:center;box-shadow:0 0 28px #69d7ff8c;position:relative}.v14-orbit img{width:88%!important;height:88%!important;object-fit:contain!important;display:block!important}.v14-speech{position:absolute;left:2%;top:4%;background:#fff;padding:16px 24px;border-radius:50%;font-size:18px;transform:rotate(-5deg);z-index:2}.spark{position:absolute;color:#fff36a;font-size:32px}.spark.a{left:4%;top:22%}.spark.b{right:4%;top:12%}.v14-mon-caption{margin-top:-16px;z-index:2;background:#fff;border-radius:20px;padding:8px 34px;text-align:center;box-shadow:0 5px 12px #2377a438}.v14-mon-caption b{display:block;font-size:20px}.v14-mon-caption small{display:inline-block;margin-top:4px;background:#ffd65a;padding:4px 12px;border-radius:999px}
+.v14-status{height:100%;box-sizing:border-box}.v14-stat{display:grid;grid-template-columns:105px 1fr 30px 26px;align-items:center;gap:6px;margin:11px 0;font-size:13px}.v14-stat>div{height:14px;background:#dce8ed;border-radius:999px;overflow:hidden}.v14-stat i{display:block;height:100%;border-radius:999px;width:0}.v14-stat:nth-of-type(1) i{background:#ff7187}.v14-stat:nth-of-type(2) i{background:#ff9b50}.v14-stat:nth-of-type(3) i{background:#51b2f3}.v14-stat:nth-of-type(4) i{background:#43cc86}.v14-stat em{font-size:10px;font-style:normal;color:#758da0}.v14-evo-title{margin:22px 0 12px;border-top:2px solid #d8e9f2;padding-top:13px;text-align:center;font-size:16px}.v14-evo{display:flex;gap:6px}.v14-evo .hud-evo-step{flex:1;text-align:center;background:#eef5f7;border-radius:11px;padding:9px 2px;font-size:9px;color:#7d8d98}.v14-evo .done{background:#dff9ee;color:#28815e}.v14-evo .current{background:#fff0b4;color:#785900;border:2px solid #ffd34c}
+.v14-actions{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:74px 86px;gap:9px;padding:5px 18% 11px}.v14-actions button{border:4px solid #fff;border-radius:23px;color:#fff;font-weight:1000;box-shadow:0 8px 16px #245c8338;display:flex;align-items:center;justify-content:center;gap:12px;font-size:30px;cursor:pointer}.v14-actions span{font-size:19px;text-align:left}.v14-actions small{display:block;font-size:9px;margin-top:2px}.v14-actions .lesson{grid-column:2/6;background:linear-gradient(135deg,#ff6a9e,#a75be4)}.v14-actions .battle{grid-column:1/3;background:linear-gradient(135deg,#ffb02e,#ff6a3c)}.v14-actions .zukan{grid-column:3/5;background:linear-gradient(135deg,#37bfff,#167de7)}.v14-actions .history{grid-column:5/7;background:linear-gradient(135deg,#64dc72,#20b952)}
+#page-child.active #childWrap{display:none!important}
+@media(max-height:760px) and (min-width:801px){.v14-dashboard{grid-template-rows:54px minmax(0,1fr) 142px}.v14-main{padding-top:9px}.v14-orbit{width:min(42vh,340px);height:min(42vh,340px)}.v14-actions{grid-template-rows:60px 70px}.v14-panel{padding:14px}.v14-stat{margin:7px 0}.v14-news{display:none}.v14-mon-name{font-size:24px}.v14-lv{margin:8px 0}}
+@media(max-width:800px){.v14-dashboard{grid-template-rows:50px minmax(0,1fr) 126px}.v14-head{grid-template-columns:1fr auto;padding:4px 8px}.v14-brand small,.v14-test{display:none}.v14-brand img{width:38px;height:38px}.v14-main{grid-template-columns:34% 1fr;padding:7px;gap:6px}.v14-left{grid-column:1}.v14-center{grid-column:2}.v14-right{position:absolute;right:6px;top:58px;width:31%;height:43%;z-index:3}.v14-news{display:none}.v14-panel{padding:7px;border-width:2px;border-radius:14px}.wood-title{font-size:10px;padding:4px 8px}.v14-mon-name{font-size:16px}.v14-type{font-size:8px;padding:4px}.v14-lv{font-size:15px;margin:5px 0}.v14-exp-label,.v14-next{font-size:7px}.v14-stat{grid-template-columns:42px 1fr 18px;gap:2px;font-size:7px;margin:4px 0}.v14-stat em{display:none}.v14-evo-title{font-size:8px;margin:5px 0;padding-top:4px}.v14-evo .hud-evo-step{font-size:5px;padding:3px 0}.v14-orbit{width:min(43vh,250px);height:min(43vh,250px)}.v14-speech{display:none}.v14-actions{padding:4px;grid-template-rows:54px 62px;gap:3px}.v14-actions button{border-width:2px;border-radius:12px;font-size:16px;gap:4px}.v14-actions span{font-size:9px}.v14-actions small{font-size:5px}}
+</style>
 <link rel="icon" type="image/png" href="./favicon.png?v=10.1"><link rel="shortcut icon" href="./favicon.png?v=10.1"><link rel="apple-touch-icon" href="./apple-touch-icon.png?v=10.1">
 
 
 </head>
 <body>
-<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.13.3</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
+<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.14.0</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
 
 <div id="starfield"></div>
 <div class="overlay" id="lvOverlay">
@@ -973,15 +988,44 @@ body:has(#page-child.active) .test-banner{position:fixed!important;top:0!importa
       </div>
     </div>
   </div>
-  <div id="gameHud" class="game-hud" style="display:none">
-<section class="hud-stage"><div class="hud-player"><div class="hud-eyebrow">MY PARTNER</div><div id="hudMonsterName" class="hud-name">モンスター</div><div id="hudStageName" class="hud-stage-name">たまご</div></div><div class="hud-monster-orbit"><span class="hud-spark s1">✦</span><span class="hud-spark s2">★</span><img id="hudMonsterImg" alt="モンスター"><div id="hudLevel" class="hud-level">Lv.1</div></div><div class="hud-exp-box"><div class="hud-exp-head"><span>EXP</span><strong id="hudExpText">0 / 15</strong></div><div class="hud-exp-track"><div id="hudExpFill" class="hud-exp-fill"></div></div><div id="hudNextEvolution" class="hud-next">次の進化を目指そう！</div></div></section>
-<aside class="hud-stats"><div class="hud-panel-title">⚡ STATUS</div>
-<div class="hud-stat hp"><span>❤️ HP</span><div class="hud-stat-track"><i id="hudHpBar"></i></div><b id="hudHp">0</b></div>
-<div class="hud-stat atk"><span>⚔️ こうげき</span><div class="hud-stat-track"><i id="hudAtkBar"></i></div><b id="hudAtk">0</b></div>
-<div class="hud-stat def"><span>🛡️ ぼうぎょ</span><div class="hud-stat-track"><i id="hudDefBar"></i></div><b id="hudDef">0</b></div>
-<div class="hud-stat spd"><span>⚡ すばやさ</span><div class="hud-stat-track"><i id="hudSpdBar"></i></div><b id="hudSpd">0</b></div>
-<div class="hud-evolution"><div class="hud-panel-title">🌟 EVOLUTION</div><div id="hudEvolutionSteps" class="hud-evo-steps"></div></div></aside>
-<nav class="hud-actions"><button class="hud-main-quest" onclick="openQuestPanel()">✨ レッスンを振り返る<small>経験値をゲット！</small></button><div class="hud-sub-actions"><button onclick="openBattle()">⚔️<span>バトル</span></button><button onclick="openChildZukan()">📖<span>図鑑</span></button><button onclick="openGrowthHistory()">📜<span>成長のきろく</span></button></div></nav></div>
+  <div id="gameHud" class="v14-dashboard" style="display:none">
+<header class="v14-head">
+  <div class="v14-brand"><img src="./icon-192.png" alt=""><div><b>プロラボ<br>マスターズ</b><small>学びで、きみの未来をもっとおもしろく！</small></div></div>
+  <div class="v14-test">🧪 全校舎テスト版 <b>Ver.14.0</b>　<span id="v14School">加古川校</span>　実在する児童の氏名・個人情報は入力しないでください</div>
+  <div class="v14-head-actions"><button onclick="openUpdateHistory()">📢 更新履歴</button><button onclick="logoutChild()">← でる</button></div>
+</header>
+<main class="v14-main">
+ <section class="v14-left">
+  <div class="v14-panel v14-profile"><div class="wood-title">きみのモンスター</div>
+   <div class="v14-mon-name" id="hudMonsterName">???</div><div class="v14-type" id="v14Type">💗 HPタイプ</div>
+   <div class="v14-lv" id="hudLevel">Lv.1</div>
+   <div class="v14-exp-label"><b>EXP</b><strong id="hudExpText">0 / 15</strong></div><div class="v14-exp"><i id="hudExpFill"></i></div>
+   <div class="v14-next" id="hudNextEvolution">つぎの進化まで あと15</div>
+  </div>
+  <div class="v14-panel v14-news"><h3>🔔 おしらせ</h3><p>レッスンを振り返って<br>モンスターを育てよう！</p><p>図鑑や成長のきろくも<br>チェックしてみよう！</p></div>
+ </section>
+ <section class="v14-center">
+   <div class="v14-speech">いっしょに<br>がんばろう！</div>
+   <div class="v14-orbit"><span class="spark a">✦</span><span class="spark b">✧</span><img id="hudMonsterImg" alt="モンスター"></div>
+   <div class="v14-mon-caption"><b id="v14MonsterCaption">モンスター</b><small id="hudStageName">たまご</small></div>
+ </section>
+ <section class="v14-right">
+  <div class="v14-panel v14-status"><div class="wood-title">ステータス</div>
+   <div class="v14-stat"><span>❤️ HP</span><div><i id="hudHpBar"></i></div><b id="hudHp">0</b><em>/31</em></div>
+   <div class="v14-stat"><span>⚔️ こうげき</span><div><i id="hudAtkBar"></i></div><b id="hudAtk">0</b><em>/31</em></div>
+   <div class="v14-stat"><span>🛡️ ぼうぎょ</span><div><i id="hudDefBar"></i></div><b id="hudDef">0</b><em>/31</em></div>
+   <div class="v14-stat"><span>🪽 すばやさ</span><div><i id="hudSpdBar"></i></div><b id="hudSpd">0</b><em>/31</em></div>
+   <div class="v14-evo-title">しんかのようす</div><div id="hudEvolutionSteps" class="v14-evo"></div>
+  </div>
+ </section>
+</main>
+<nav class="v14-actions">
+ <button class="lesson" onclick="openQuestPanel()">📖 <span>レッスンを振り返る<small>きみの がんばりで モンスターが成長する！</small></span></button>
+ <button class="battle" onclick="openBattle()">⚔️ <span>バトル<small>ほかのモンスターと たたかってみよう！</small></span></button>
+ <button class="zukan" onclick="openChildZukan()">📘 <span>図鑑<small>いろいろなモンスターを見てみよう！</small></span></button>
+ <button class="history" onclick="openGrowthHistory()">📜 <span>成長のきろく<small>これまでの がんばりを振りかえろう！</small></span></button>
+</nav>
+</div>
 <div id="questOverlay" class="quest-overlay" onclick="if(event.target===this)closeQuestPanel()"><div class="quest-shell"><button class="quest-close" onclick="closeQuestPanel()">✕</button><div class="quest-heading"><span>🎯 MAIN QUEST</span><h2>今日のレッスンを振り返ろう！</h2><p>振り返りを書いて、モンスターを育てよう。</p></div><div id="questMount"></div></div></div><div class="wrap" id="childWrap" style="display:none;">
     <div class="monster-card">
       <div class="monster-name-row">
@@ -2842,7 +2886,7 @@ function finishBattle(result){
 
 // ===== アップデート通知・更新履歴 =====
 // 今後バージョンアップする際は APP_VERSION と UPDATE_HISTORY の先頭を更新する。
-const APP_VERSION = '13.3';
+const APP_VERSION = '14.0';
 const UPDATE_NOTICE_STORAGE_KEY = 'plm_last_seen_update_version';
 const UPDATE_HISTORY = [
 {version:'12.0R',date:'2026/09/20',changes:[
@@ -3156,5 +3200,17 @@ function renderProlaboMonsterOnce(){
  }catch(e){console.warn('monster render',e);}
 }
 setInterval(renderProlaboMonsterOnce,500);
+</script><script>
+function syncV14Meta(){
+ try{
+  const s=(typeof currentUser!=='undefined'&&currentUser&&typeof getStudent==='function')?getStudent(currentUser.id):null;if(!s)return;
+  const iv=s.iv||{hp:0,atk:0,def:0,spd:0};const tp=typeof getIvType==='function'?getIvType(iv):'hp';
+  const labels={hp:'❤️ HPタイプ',atk:'⚔️ こうげきタイプ',def:'🛡️ ぼうぎょタイプ',spd:'🪽 すばやさタイプ'};
+  const e=document.getElementById('v14Type');if(e)e.textContent=labels[tp]||labels.hp;
+  const c=document.getElementById('v14MonsterCaption');if(c)c.textContent=s.monsterName||'モンスター';
+  const sc=document.getElementById('v14School');if(sc){const sel=document.getElementById('schoolSelect');sc.textContent=sel&&sel.options[sel.selectedIndex]?sel.options[sel.selectedIndex].text:'テスト校';}
+ }catch(e){}
+}
+setInterval(syncV14Meta,600);
 </script></body>
 </html>
