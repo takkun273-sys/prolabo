@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>プロラボマスターズ - 全校舎テスト版 Ver.11.0</title>
+<title>プロラボマスターズ - 全校舎テスト版 Ver.11.1</title>
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -597,10 +597,38 @@ button[onclick*="reflect" i],button[onclick*="lesson" i],button[onclick*="exp" i
  #page-child .monster-center{min-height:220px!important}
  #page-child .wrap{padding:18px 12px 60px!important}
 }
+
+/* ===== Ver.11.1 STATUS VISIBILITY FIX ===== */
+#page-child .monster-card{
+  overflow:visible!important;
+  height:auto!important;
+  max-height:none!important;
+  min-height:0!important;
+}
+#page-child .monster-center{
+  height:auto!important;
+  max-height:none!important;
+}
+#page-child .iv-section{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  margin-top:16px!important;
+}
+#page-child .iv-grid,#page-child .iv-radar{
+  display:block!important;
+  visibility:visible!important;
+}
+@media(max-width:820px){
+ #page-child .monster-card{overflow:visible!important;height:auto!important}
+}
 </style>
 <link rel="icon" type="image/png" href="./favicon.png?v=10.1"><link rel="shortcut icon" href="./favicon.png?v=10.1"><link rel="apple-touch-icon" href="./apple-touch-icon.png?v=10.1"></head>
 <body>
-<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.11.0</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
+<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.11.1</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
 
 <div id="starfield"></div>
 <div class="overlay" id="lvOverlay">
@@ -2636,9 +2664,13 @@ function finishBattle(result){
 
 // ===== アップデート通知・更新履歴 =====
 // 今後バージョンアップする際は APP_VERSION と UPDATE_HISTORY の先頭を更新する。
-const APP_VERSION = '11.0';
+const APP_VERSION = '11.1';
 const UPDATE_NOTICE_STORAGE_KEY = 'plm_last_seen_update_version';
 const UPDATE_HISTORY = [
+{version:'11.1',date:'2026/09/20',changes:[
+ 'Ver.11の育成ホームで個体値・ステータス部分が見えなくなる表示不具合を修正しました。',
+ 'モンスターカードの高さを内容に合わせて自動で伸びるようにし、HP・こうげき・ぼうぎょ・すばやさを確認できるようにしました。'
+ ]},
 {version:'11.0',date:'2026/09/20',changes:[
     'ログイン後の育成ホームを「冒険の拠点」をイメージしたゲームUIへ刷新しました。',
     'モンスターを画面の主役にし、EXP・進化段階・個体値をゲームのステータス画面らしく見やすくしました。',
