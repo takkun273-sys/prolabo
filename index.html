@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>プロラボマスターズ - 全校舎テスト版 Ver.12.3</title>
+<title>プロラボマスターズ - 全校舎テスト版 Ver.13.0</title>
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -766,10 +766,13 @@ button[onclick*="reflect" i],button[onclick*="lesson" i],button[onclick*="exp" i
 /* Ver.12.3 bugfix: HUD monster + stat bars */
 #hudMonsterImg{display:block!important;opacity:1!important;visibility:visible!important}
 #page-child.active .hud-stat-track i{width:0}
+
+#hudMonsterImg,#monster-img{border-radius:0!important;background:transparent!important;object-fit:contain!important}
+#hudMonsterImg{filter:drop-shadow(0 18px 15px rgba(31,112,167,.23))!important}
 </style>
 <link rel="icon" type="image/png" href="./favicon.png?v=10.1"><link rel="shortcut icon" href="./favicon.png?v=10.1"><link rel="apple-touch-icon" href="./apple-touch-icon.png?v=10.1"></head>
 <body>
-<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.12.3</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
+<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.13.0</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
 
 <div id="starfield"></div>
 <div class="overlay" id="lvOverlay">
@@ -2821,7 +2824,7 @@ function finishBattle(result){
 
 // ===== アップデート通知・更新履歴 =====
 // 今後バージョンアップする際は APP_VERSION と UPDATE_HISTORY の先頭を更新する。
-const APP_VERSION = '12.3';
+const APP_VERSION = '13.0';
 const UPDATE_NOTICE_STORAGE_KEY = 'plm_last_seen_update_version';
 const UPDATE_HISTORY = [
 {version:'12.0R',date:'2026/09/20',changes:[
@@ -3072,5 +3075,32 @@ function syncGameHudV123(){
  }catch(e){console.warn('HUD sync',e);}
 }
 setInterval(syncGameHudV123,300);
+</script><script>
+/* ===== Ver.13 NEW MONSTER ART SYSTEM ===== */
+const PROLABO_MONSTER_ASSETS = {
+ egg:'./monsters/egg.png',
+ young:'./monsters/young.png',
+ grown_hp:'./monsters/grown_hp.png', final_hp:'./monsters/final_hp.png', ultimate_hp:'./monsters/ultimate_hp.png',
+ grown_atk:'./monsters/grown_atk.png', final_atk:'./monsters/final_atk.png', ultimate_atk:'./monsters/ultimate_atk.png',
+ grown_def:'./monsters/grown_def.png', final_def:'./monsters/final_def.png', ultimate_def:'./monsters/ultimate_def.png',
+ grown_spd:'./monsters/grown_spd.png', final_spd:'./monsters/final_spd.png', ultimate_spd:'./monsters/ultimate_spd.png'
+};
+function getProlaboMonsterAsset(stage,type){
+ if(stage<=0)return PROLABO_MONSTER_ASSETS.egg;
+ if(stage===1)return PROLABO_MONSTER_ASSETS.young;
+ const sk=stage===2?'grown':stage===3?'final':'ultimate';
+ return PROLABO_MONSTER_ASSETS[`${sk}_${type}`]||PROLABO_MONSTER_ASSETS.young;
+}
+function applyNewMonsterArt(){
+ try{
+  const s=(typeof currentUser!=='undefined'&&currentUser&&typeof getStudent==='function')?getStudent(currentUser.id):null;
+  if(!s)return;
+  const iv=s.iv||{hp:0,atk:0,def:0,spd:0};
+  const type=typeof getIvType==='function'?getIvType(iv):'hp';
+  const asset=getProlaboMonsterAsset(s.stage||0,type);
+  ['monster-img','hudMonsterImg'].forEach(id=>{const el=document.getElementById(id);if(el&&el.getAttribute('src')!==asset)el.src=asset;});
+ }catch(e){}
+}
+setInterval(applyNewMonsterArt,250);
 </script></body>
 </html>
