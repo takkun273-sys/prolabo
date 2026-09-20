@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>プロラボマスターズ - 全校舎テスト版 Ver.13.1</title>
+<title>プロラボマスターズ - 全校舎テスト版 Ver.13.3</title>
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -774,13 +774,23 @@ button[onclick*="reflect" i],button[onclick*="lesson" i],button[onclick*="exp" i
 #hudMonsterImg,#monster-img{transition:none!important;animation:none!important;background:transparent!important;border-radius:0!important}
 .hud-monster-orbit{isolation:isolate}
 .hud-monster-orbit:before{content:"";position:absolute;width:72%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.82),rgba(195,239,255,.35) 48%,transparent 70%);z-index:-1}
-</style>
+
+/* ===== Ver.13.2 HEADER + ONE-SCREEN FIX ===== */
+#page-child.active .topbar{height:50px!important;min-height:50px!important;padding:4px 14px!important;position:relative!important;z-index:100!important}
+#page-child.active .topbar-title{font-size:13px!important}
+#page-child.active .topbar-right{gap:6px!important}
+#page-child.active .topbar-right .icon-btn{padding:6px 10px!important;font-size:11px!important}
+#page-child.active .game-hud{height:calc(100dvh - 50px)!important;padding-top:7px!important}
+#page-child.active #hudMonsterImg{width:min(31vh,245px)!important;height:min(31vh,245px)!important;object-fit:contain!important}
+body:has(#page-child.active) .test-banner{position:fixed!important;top:0!important;left:50%!important;transform:translateX(-50%)!important;z-index:10000!important;width:auto!important;max-width:72vw!important;min-height:28px!important;height:28px!important;padding:2px 11px!important;border-radius:0 0 12px 12px!important;font-size:9px!important;line-height:24px!important;overflow:hidden!important;white-space:nowrap!important;box-shadow:0 3px 9px rgba(0,0,0,.10)!important}
+@media(max-width:800px){#page-child.active .topbar{height:46px!important;min-height:46px!important;padding:3px 7px!important}#page-child.active .game-hud{height:calc(100dvh - 46px)!important}body:has(#page-child.active) .test-banner{max-width:90vw!important;font-size:7px!important}}
+#hudMonsterImg,#monster-img{width:min(34vh,285px)!important;height:min(34vh,285px)!important;max-width:94%!important;max-height:94%!important;object-fit:contain!important;object-position:center!important;overflow:visible!important;border-radius:0!important;background:transparent!important;transition:none!important;animation:none!important}.hud-monster-orbit{overflow:visible!important;padding:8px!important}</style>
 <link rel="icon" type="image/png" href="./favicon.png?v=10.1"><link rel="shortcut icon" href="./favicon.png?v=10.1"><link rel="apple-touch-icon" href="./apple-touch-icon.png?v=10.1">
-<link rel="preload" as="image" href="./monsters/egg.png">
-<link rel="preload" as="image" href="./monsters/young.png">
+
+
 </head>
 <body>
-<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.13.1</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
+<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.13.3</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
 
 <div id="starfield"></div>
 <div class="overlay" id="lvOverlay">
@@ -2832,7 +2842,7 @@ function finishBattle(result){
 
 // ===== アップデート通知・更新履歴 =====
 // 今後バージョンアップする際は APP_VERSION と UPDATE_HISTORY の先頭を更新する。
-const APP_VERSION = '13.1';
+const APP_VERSION = '13.3';
 const UPDATE_NOTICE_STORAGE_KEY = 'plm_last_seen_update_version';
 const UPDATE_HISTORY = [
 {version:'12.0R',date:'2026/09/20',changes:[
@@ -3086,18 +3096,14 @@ function syncGameHudV123(){
 </script><script>
 /* ===== Ver.13 NEW MONSTER ART SYSTEM ===== */
 const PROLABO_MONSTER_ASSETS = {
- egg:'./monsters/egg.png',
- young:'./monsters/young.png',
- grown_hp:'./monsters/grown_hp.png', final_hp:'./monsters/final_hp.png', ultimate_hp:'./monsters/ultimate_hp.png',
- grown_atk:'./monsters/grown_atk.png', final_atk:'./monsters/final_atk.png', ultimate_atk:'./monsters/ultimate_atk.png',
- grown_def:'./monsters/grown_def.png', final_def:'./monsters/final_def.png', ultimate_def:'./monsters/ultimate_def.png',
- grown_spd:'./monsters/grown_spd.png', final_spd:'./monsters/final_spd.png', ultimate_spd:'./monsters/ultimate_spd.png'
+ egg_hp:'./monsters/egg_hp.png?v=13.3', young_hp:'./monsters/young_hp.png?v=13.3', grown_hp:'./monsters/grown_hp.png?v=13.3', final_hp:'./monsters/final_hp.png?v=13.3', ultimate_hp:'./monsters/ultimate_hp.png?v=13.3',
+ egg_atk:'./monsters/egg_atk.png?v=13.3', young_atk:'./monsters/young_atk.png?v=13.3', grown_atk:'./monsters/grown_atk.png?v=13.3', final_atk:'./monsters/final_atk.png?v=13.3', ultimate_atk:'./monsters/ultimate_atk.png?v=13.3',
+ egg_def:'./monsters/egg_def.png?v=13.3', young_def:'./monsters/young_def.png?v=13.3', grown_def:'./monsters/grown_def.png?v=13.3', final_def:'./monsters/final_def.png?v=13.3', ultimate_def:'./monsters/ultimate_def.png?v=13.3',
+ egg_spd:'./monsters/egg_spd.png?v=13.3', young_spd:'./monsters/young_spd.png?v=13.3', grown_spd:'./monsters/grown_spd.png?v=13.3', final_spd:'./monsters/final_spd.png?v=13.3', ultimate_spd:'./monsters/ultimate_spd.png?v=13.3'
 };
 function getProlaboMonsterAsset(stage,type){
- if(stage<=0)return PROLABO_MONSTER_ASSETS.egg;
- if(stage===1)return PROLABO_MONSTER_ASSETS.young;
- const sk=stage===2?'grown':stage===3?'final':'ultimate';
- return PROLABO_MONSTER_ASSETS[`${sk}_${type}`]||PROLABO_MONSTER_ASSETS.young;
+ const sk=['egg','young','grown','final','ultimate'][Math.max(0,Math.min(4,stage||0))];
+ return PROLABO_MONSTER_ASSETS[`${sk}_${type}`] || PROLABO_MONSTER_ASSETS[`egg_${type}`];
 }
 function applyNewMonsterArt(){
  try{
