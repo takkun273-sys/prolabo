@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>プロラボマスターズ - 全校舎テスト版 Ver.10.5</title>
+<title>プロラボマスターズ - 全校舎テスト版 Ver.11.0</title>
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -490,10 +490,117 @@ button[onclick*="reflect" i],button[onclick*="lesson" i],button[onclick*="exp" i
  #page-login .login-wrap{padding-top:34px!important}
  #page-login .login-wrap:before{width:112px!important;height:112px!important}
 }
+
+/* ===== Ver.11 ADVENTURE HOME ===== */
+#page-child{
+  min-height:100vh!important;
+  background:
+    linear-gradient(180deg,rgba(232,249,255,.05),rgba(242,253,255,.22)),
+    url('./adventure-home-bg.png?v=11') center top/cover no-repeat scroll!important;
+  color:#17345f!important;
+}
+#page-child .topbar{
+  background:linear-gradient(90deg,rgba(255,225,81,.96),rgba(255,155,142,.94),rgba(243,127,211,.92))!important;
+  border:0!important;box-shadow:0 6px 20px rgba(44,94,130,.18)!important;
+}
+#page-child .topbar-title{font-weight:1000!important;color:#17345f!important}
+#page-child .topbar-right .icon-btn{
+  background:rgba(255,255,255,.92)!important;color:#24466d!important;border:1px solid rgba(255,255,255,.85)!important;
+  box-shadow:0 4px 12px rgba(31,91,130,.10)!important;
+}
+#page-child .wrap{max-width:980px!important;padding-top:26px!important}
+#page-child #childWrap{display:grid;grid-template-columns:minmax(300px,.9fr) minmax(380px,1.15fr);gap:22px;align-items:start}
+#page-child .monster-card{
+  position:sticky;top:88px;
+  background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(236,250,255,.95))!important;
+  border:3px solid rgba(255,255,255,.9)!important;border-radius:30px!important;
+  box-shadow:0 20px 55px rgba(30,104,155,.22)!important;overflow:hidden!important;
+}
+#page-child .monster-card:before{
+  content:"🌟 ぼうけんのなかま";display:block;margin:-2px -2px 16px;padding:10px 16px;text-align:center;
+  background:linear-gradient(90deg,#50cfff,#7d9cff,#b98bf3);color:#fff;font-weight:1000;letter-spacing:.08em;
+}
+#page-child .monster-name-row{padding:0 8px}
+#page-child .monster-name{font-size:28px!important;color:#17345f!important}
+#page-child .monster-grade{background:#fff4c7!important;color:#8c6511!important;border:1px solid #ffe47c!important}
+#page-child .monster-center{
+  min-height:250px!important;margin:12px 0!important;padding:12px!important;border-radius:24px!important;
+  background:radial-gradient(circle at 50% 65%,rgba(255,255,255,.98),rgba(161,230,255,.54) 43%,rgba(107,207,255,.16) 70%,transparent 72%)!important;
+}
+#page-child .monster-wrap{transform:scale(1.18)}
+#page-child .monster-wrap img{max-width:190px!important;max-height:190px!important}
+#page-child .lv-badge{background:linear-gradient(135deg,#ffd84d,#ffb34d)!important;color:#65410a!important;border:2px solid #fff!important;box-shadow:0 5px 14px rgba(175,112,18,.20)!important}
+#page-child .exp-row{margin-top:14px!important}.exp-label{color:#4a75a1!important;font-weight:900!important}.exp-val{color:#17345f!important;font-weight:900!important}
+#page-child .exp-track{height:16px!important;background:#d8edf6!important;border:2px solid #fff!important;box-shadow:inset 0 2px 4px rgba(40,90,120,.10)!important}
+#page-child .exp-fill{background:linear-gradient(90deg,#55e0ad,#47c8ff,#887cff)!important;box-shadow:0 0 12px rgba(71,200,255,.45)!important}
+#page-child .stage-dots{margin-bottom:14px!important}
+#page-child .iv-section{background:rgba(255,255,255,.76)!important;border:1px solid #d5eef8!important;border-radius:20px!important;padding:14px!important}
+#page-child .iv-title{color:#17345f!important}
+#page-child .iv-row{background:#f7fcff!important;border-radius:12px!important;padding:7px 9px!important;margin-bottom:6px!important}
+#page-child .iv-label{color:#466787!important}
+#page-child .card{
+  background:rgba(255,255,255,.96)!important;border:3px solid rgba(255,255,255,.88)!important;border-radius:30px!important;
+  box-shadow:0 20px 55px rgba(30,104,155,.20)!important;padding:22px!important;
+}
+#page-child .card-title{
+  font-size:22px!important;color:#17345f!important;margin:-4px 0 18px!important;padding-bottom:12px!important;
+  border-bottom:3px solid #e2f3fa!important;
+}
+#page-child .card-title:after{content:"　レッスンの経験をモンスターの力に変えよう！";font-size:11px;color:#7190aa;font-weight:700}
+#page-child .field-label{color:#355f88!important;font-weight:900!important}
+#page-child .quick-grid{gap:9px!important}
+#page-child .qbtn{
+  background:linear-gradient(180deg,#fff,#eefaff)!important;color:#315b81!important;border:2px solid #d6effa!important;
+  border-radius:16px!important;box-shadow:0 4px 10px rgba(50,112,150,.08)!important;
+}
+#page-child .qbtn.selected,#page-child .qbtn.active{
+  background:linear-gradient(135deg,#fff2b8,#ffe16c)!important;color:#76530b!important;border-color:#ffc93f!important;
+}
+#page-child #lessonNameInput,#page-child #freeText{
+  background:#fff!important;color:#17345f!important;border:2px solid #cdebf8!important;border-radius:17px!important;
+}
+#page-child #freeText{min-height:150px!important}
+#page-child .char-count{color:#67849e!important}
+#page-child .iv-guide-toggle{background:#eefaff!important;color:#27678f!important;border-color:#cbeafa!important;border-radius:16px!important}
+#page-child .check-btn{
+  background:linear-gradient(135deg,#55d7ff,#5a8cff)!important;color:#fff!important;border:0!important;border-radius:18px!important;
+  box-shadow:0 9px 22px rgba(65,143,226,.24)!important;min-height:52px!important;
+}
+#page-child .submit-btn{
+  background:linear-gradient(135deg,#ff77aa,#9d78ef)!important;color:#fff!important;border:0!important;border-radius:18px!important;
+  box-shadow:0 10px 25px rgba(193,91,174,.25)!important;min-height:58px!important;font-size:17px!important;
+}
+#page-child .ai-box{background:linear-gradient(180deg,#f0fbff,#fff)!important;color:#315a7c!important;border:2px solid #cfeefa!important;border-radius:18px!important}
+#page-child #histCard{grid-column:1/-1!important}
+
+/* Battle: same game world, warmer arena presentation */
+#page-battle{
+ background:linear-gradient(180deg,rgba(239,249,255,.20),rgba(255,246,250,.28)),url('./adventure-home-bg.png?v=11') center/cover fixed!important;
+}
+#page-battle .battle-topbar{background:linear-gradient(90deg,#ffd95a,#ff9a8e,#e889d6)!important;box-shadow:0 6px 20px rgba(44,94,130,.18)!important}
+#page-battle .battle-wrap{max-width:900px!important}
+#page-battle .lobby-card,#page-battle .battle-field,#page-battle .battle-log{
+ background:rgba(255,255,255,.94)!important;color:#17345f!important;border:2px solid rgba(255,255,255,.9)!important;border-radius:26px!important;
+ box-shadow:0 16px 45px rgba(35,100,145,.20)!important;
+}
+#page-battle .action-btn{border-radius:18px!important;box-shadow:0 7px 16px rgba(30,90,130,.13)!important}
+
+/* Zukan becomes a bright game book instead of a dark utility modal */
+#childZukanOverlay{background:rgba(39,115,166,.82)!important;backdrop-filter:blur(10px)!important}
+#childZukanOverlay>div{background:linear-gradient(180deg,#fff,#eefaff);padding:20px;border-radius:28px;box-shadow:0 25px 70px rgba(12,61,99,.30)}
+#childZukanOverlay button{color:#315b81!important;background:#fff!important;border-color:#d3eaf5!important}
+
+/* Responsive: one-column adventure screen */
+@media(max-width:820px){
+ #page-child #childWrap{display:block!important}
+ #page-child .monster-card{position:relative!important;top:auto!important;margin-bottom:18px!important}
+ #page-child .monster-center{min-height:220px!important}
+ #page-child .wrap{padding:18px 12px 60px!important}
+}
 </style>
 <link rel="icon" type="image/png" href="./favicon.png?v=10.1"><link rel="shortcut icon" href="./favicon.png?v=10.1"><link rel="apple-touch-icon" href="./apple-touch-icon.png?v=10.1"></head>
 <body>
-<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.10.5</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
+<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.11.0</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
 
 <div id="starfield"></div>
 <div class="overlay" id="lvOverlay">
@@ -2529,9 +2636,16 @@ function finishBattle(result){
 
 // ===== アップデート通知・更新履歴 =====
 // 今後バージョンアップする際は APP_VERSION と UPDATE_HISTORY の先頭を更新する。
-const APP_VERSION = '10.5';
+const APP_VERSION = '11.0';
 const UPDATE_NOTICE_STORAGE_KEY = 'plm_last_seen_update_version';
 const UPDATE_HISTORY = [
+{version:'11.0',date:'2026/09/20',changes:[
+    'ログイン後の育成ホームを「冒険の拠点」をイメージしたゲームUIへ刷新しました。',
+    'モンスターを画面の主役にし、EXP・進化段階・個体値をゲームのステータス画面らしく見やすくしました。',
+    'レッスン振り返りを育成のメイン操作として強調し、AIチェック・EXP獲得までの導線を整理しました。',
+    '図鑑とバトルもトップページと同じ明るい冒険世界に合わせてデザインを統一しました。',
+    '既存の児童・モンスター・EXP・個体値・図鑑・履歴・バトル履歴の保存仕様は変更していません。'
+    ]},
 {version:'10.5',date:'2026/09/20',changes:[
  'トップページの「プロラボマスターズ」文字見出しを、新しい正式アイコンへ置き換えました。',
  'PC・スマホともにページをスクロールすると冒険背景も一緒に動くよう変更しました。',
