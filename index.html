@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>プロラボマスターズ - 全校舎テスト版 Ver.10.2</title>
+<title>プロラボマスターズ - 全校舎テスト版 Ver.10.3</title>
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
@@ -390,10 +390,81 @@ button[onclick*="reflect" i],button[onclick*="lesson" i],button[onclick*="exp" i
 @media(max-width:720px){button,.btn{min-height:44px}.card,.panel,.section,.monster-card{border-radius:20px!important}}
 
 .v101-brand-icon{width:118px;height:118px;object-fit:cover;border-radius:28px;display:block;margin:0 auto 12px;box-shadow:0 14px 30px rgba(39,136,255,.22);border:4px solid #fff}/* Ver.10.2: new brand icon only */
-.login-logo{gap:0!important}.v101-brand-icon{margin:0 auto 14px!important}</style>
+.login-logo{gap:0!important}.v101-brand-icon{margin:0 auto 14px!important}
+/* ===== Ver.10.3 GAME LANDING ===== */
+#page-login{
+  min-height:100vh!important;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.02),rgba(231,250,255,.08)),
+    url('./login-game-world.png?v=10.3') center top/cover no-repeat fixed!important;
+  position:relative!important;
+}
+#page-login:before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,transparent 0 48%,rgba(226,249,255,.12) 70%,rgba(242,252,255,.40) 100%);
+}
+#page-login .login-wrap{
+  width:min(520px,calc(100% - 28px))!important;
+  margin:0 auto!important;
+  padding-top:52vh!important;
+  padding-bottom:70px!important;
+  position:relative!important;z-index:2!important;
+}
+#page-login .login-logo{display:none!important}
+#page-login .school-card{
+  background:rgba(255,255,255,.92)!important;
+  backdrop-filter:blur(12px)!important;
+  border:2px solid rgba(255,255,255,.78)!important;
+  box-shadow:0 14px 40px rgba(21,105,161,.18)!important;
+  border-radius:24px!important;
+}
+#page-login .login-card{
+  background:rgba(255,255,255,.96)!important;
+  backdrop-filter:blur(14px)!important;
+  border:2px solid rgba(255,255,255,.86)!important;
+  box-shadow:0 18px 50px rgba(19,91,145,.20)!important;
+  border-radius:28px!important;
+}
+#page-login .login-card h2{
+  font-size:22px!important;color:#17345f!important;
+}
+#page-login .btn-primary{
+  min-height:56px!important;
+  font-size:18px!important;
+  border-radius:18px!important;
+  background:linear-gradient(135deg,#27b9ff,#2788ff)!important;
+  box-shadow:0 10px 24px rgba(39,136,255,.28)!important;
+}
+#page-login .btn-primary:before{content:"🐾 ";font-size:20px}
+#page-login input,#page-login select,#page-login textarea{
+  min-height:50px!important;border-radius:16px!important;
+  border:2px solid #bde7fb!important;
+}
+#page-login .school-title{font-size:15px!important;color:#178bc9!important}
+#page-login .test-note{background:rgba(232,245,255,.78)!important;border-radius:14px!important;padding:10px!important}
+#page-login .sample-login-box{background:#eefaff!important;border:1px dashed #7fd3f6!important;border-radius:16px!important}
+#page-login .test-btn{background:#f4fbff!important;color:#2476a8!important;border:1px solid #c9eafa!important}
+
+/* On narrow screens the artwork becomes a top hero instead of forcing desktop proportions. */
+@media(max-width:760px){
+  #page-login{
+    background-size:auto 520px!important;
+    background-position:center top!important;
+    background-repeat:no-repeat!important;
+    background-color:#e9faff!important;
+  }
+  #page-login .login-wrap{padding-top:430px!important;width:min(94%,520px)!important}
+}
+@media(max-width:430px){
+  #page-login{background-size:auto 430px!important}
+  #page-login .login-wrap{padding-top:350px!important}
+  #page-login .school-card,#page-login .login-card{border-radius:22px!important}
+}
+
+</style>
 <link rel="icon" type="image/png" href="./favicon.png?v=10.1"><link rel="shortcut icon" href="./favicon.png?v=10.1"><link rel="apple-touch-icon" href="./apple-touch-icon.png?v=10.1"></head>
 <body>
-<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.10.2</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
+<div id="testBanner" class="test-banner"><span>🧪 全校舎テスト版 Ver.10.3</span><span class="school-pill" id="testSchoolPill">校舎未選択</span><span class="warning-text">実在する児童の氏名・個人情報は入力しないでください</span><button class="update-history-btn" onclick="openUpdateHistory()">📢 更新履歴</button></div>
 
 <div id="starfield"></div>
 <div class="overlay" id="lvOverlay">
@@ -2429,9 +2500,15 @@ function finishBattle(result){
 
 // ===== アップデート通知・更新履歴 =====
 // 今後バージョンアップする際は APP_VERSION と UPDATE_HISTORY の先頭を更新する。
-const APP_VERSION = '10.2';
+const APP_VERSION = '10.3';
 const UPDATE_NOTICE_STORAGE_KEY = 'plm_last_seen_update_version';
 const UPDATE_HISTORY = [
+{version:'10.3',date:'2026/09/20',changes:[
+ 'トップページをプロラボマスターズのゲーム世界を感じられるビジュアルへ刷新しました。',
+ '城・草原・モンスターの世界観を背景にし、ログイン操作は実際に使えるカードとして重ねています。',
+ 'PC・スマホで表示が崩れにくいよう、画面幅に応じて背景とログイン位置を調整しました。',
+ '既存の児童データ・育成データ・学年（小1〜高3）・ログイン機能はそのまま引き継ぎます。'
+]},
 {version:'10.2',date:'2026/09/20',changes:['ログイン画面上部の旧ドラゴンアイコンを削除し、新しいプロラボマスターズのアイコンへ統一しました。']},
 {version:'10.1',date:'2026/09/20',changes:['新しいアイコンの読み込み方法を修正しました。','ログイン画面にも新しいアイコンを表示するようにしました。','学年選択を小学1年生〜高校3年生まで対応しました。']},
   {version:'10.0',date:'2026/09/20',changes:[
